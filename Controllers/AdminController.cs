@@ -58,10 +58,10 @@ public class AdminController : Controller {
     }
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CreateSkill(CreateRole model){
+    public async Task<IActionResult> CreateSkill(CreateSkill model){
         if (ModelState.IsValid){
             var role = new ApplicationRole(){
-                Name = model.RoleName,
+                Name = model.skillName,
             };
             var result = await _roleManager.CreateAsync(role);
             if (result.Succeeded){
