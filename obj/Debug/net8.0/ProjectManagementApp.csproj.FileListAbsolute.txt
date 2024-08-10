@@ -260,3 +260,4 @@ C:\Users\yafet\dotnetprojects\ProjectManagementApp\obj\Debug\net8.0\refint\Proje
 C:\Users\yafet\dotnetprojects\ProjectManagementApp\obj\Debug\net8.0\ProjectManagementApp.pdb
 C:\Users\yafet\dotnetprojects\ProjectManagementApp\obj\Debug\net8.0\ProjectManagementApp.genruntimeconfig.cache
 C:\Users\yafet\dotnetprojects\ProjectManagementApp\obj\Debug\net8.0\ref\ProjectManagementApp.dll
+C:\Users\yafet\dotnetprojects\ProjectManagementApp\obj\Debug\net8.0\ProjectManagementApp.sourcelink.json
