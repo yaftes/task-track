@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-[Authorize(Roles ="Super")]
+
 public class SuperAdminController : Controller {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
@@ -19,11 +19,10 @@ public class SuperAdminController : Controller {
             this._dbContext = _dbContext;
         }
     [HttpGet]
-    [Authorize(Roles ="Super")]
-    public IActionResult Register(){
+     public IActionResult Register(){
         return View();
     }
-    [Authorize(Roles ="Super")]
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegisterViewModel model){
