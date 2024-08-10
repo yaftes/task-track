@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-[Authorize(Roles = "Admin")]
+
 public class AdminController : Controller {
 
     private readonly UserManager<ApplicationUser> _userManager;
@@ -17,9 +17,9 @@ public class AdminController : Controller {
             this._roleManager = _roleManager;
             this._dbContext = _dbContext;
         }
-    [Authorize(Roles = "Admin")]
+    
     public IActionResult Register() {
-        var skills = _dbContext.Skills.ToList();
+        var skills = _dbContext.Skill.ToList();
         RegisterViewModel model = new RegisterViewModel(){
             Skills = skills
         };
@@ -35,7 +35,7 @@ public class AdminController : Controller {
                 LastName = model.LastName,
                 Email = model.Email,
                 UserName = model.UserName,
-                Skills = _dbContext.Skills.ToList()
+                Skills = _dbContext.Skill.ToList(),
 
             };
             var result = await _userManager.CreateAsync(user,model.Password);
@@ -53,12 +53,12 @@ public class AdminController : Controller {
     }
 
     [HttpGet]
-    public IActionResult CreateRole(){
+    public IActionResult CreateSkill(){
         return View();
     }
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CreateRole(CreateRole model){
+    public async Task<IActionResult> CreateSkill(CreateRole model){
         if (ModelState.IsValid){
             var role = new ApplicationRole(){
                 Name = model.RoleName,

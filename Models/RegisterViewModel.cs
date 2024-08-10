@@ -1,6 +1,5 @@
 
 using System.ComponentModel.DataAnnotations;
-
 public class RegisterViewModel {
     [Required]
     public string FirstName { get; set;} = "";
