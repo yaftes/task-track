@@ -11,5 +11,6 @@ public class ApplicationUser : IdentityUser {
     public DateTime CreatedTime { get; set;}
     public List<Skill>? Skills {get;set;}
     public List<Project>? Projects {get;set;}
+    public List<Task>? Tasks {get;set;} 
     
 }
