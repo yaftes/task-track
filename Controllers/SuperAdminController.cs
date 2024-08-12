@@ -1,10 +1,10 @@
 // to add the admin info
-
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
+[Authorize(Roles = "Super")]
 public class SuperAdminController : Controller {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;

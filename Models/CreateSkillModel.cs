@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-public class CreateRole {
+public class CreateSkill {
     [Required]
-    public required string RoleName { get; set; }    
+    public required string skillName { get; set; }    
 }

@@ -3,9 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-
+[Authorize(Roles = "Admin")]
 public class AdminController : Controller {
-
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly ApplicationDbContext _dbContext;
@@ -27,7 +26,6 @@ public class AdminController : Controller {
     }
     [HttpPost]
     [ValidateAntiForgeryToken]
-    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Register(RegisterViewModel model){
         if (ModelState.IsValid){
             var user = new ApplicationUser(){
@@ -41,7 +39,7 @@ public class AdminController : Controller {
             var result = await _userManager.CreateAsync(user,model.Password);
             if (result.Succeeded){
                 // add the current user to admin role
-                var res = await _userManager.AddToRoleAsync(user,"Admin");
+                var res = await _userManager.AddToRoleAsync(user,"Employee");
                 if (res.Succeeded){
                     return RedirectToAction("Index","Home");
                 }
@@ -51,23 +49,27 @@ public class AdminController : Controller {
         return View(model);
 
     }
-
     [HttpGet]
     public IActionResult CreateSkill(){
         return View();
     }
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CreateSkill(CreateSkill model){
+    public IActionResult CreateSkill(CreateSkill model){
+        var check = _dbContext.Skill.FirstOrDefault(x => x.SkillName == model.skillName);
         if (ModelState.IsValid){
-            var role = new ApplicationRole(){
-                Name = model.skillName,
-            };
-            var result = await _roleManager.CreateAsync(role);
-            if (result.Succeeded){
-                return RedirectToAction("Index","Home");
+            if(check != null){
+            
+            return View(model);
             }
+           Skill skill  = new Skill(){
+            SkillName = model.skillName,
+           };
+            _dbContext.Skill.Add(skill);
+            _dbContext.SaveChanges();
 
+            return RedirectToAction("Index","Home");
+        
         }
         return View(model);
 

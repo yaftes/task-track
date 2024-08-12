@@ -9,6 +9,7 @@ public class ApplicationUser : IdentityUser {
     [Required]
     public required string LastName { get; set;}
     public DateTime CreatedTime { get; set;}
-    public List<Skill> Skills {get;set;} = [];
+    public List<Skill>? Skills {get;set;}
+    public List<Project>? Projects {get;set;}
     
 }
