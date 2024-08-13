@@ -1,0 +1,10 @@
+@using ProjectManagementApp.Models
+@model ProjectModel
+
+<form  method="post">
+    <label asp-for = "Title"></label><br>
+    <input type="text" asp-for = "Title"><br>
+    <label asp-for="Description"></label><br>
+    <input type="text" asp-for="Description"><br>
+    <button type="submit">create</button>
+</form>

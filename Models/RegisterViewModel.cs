@@ -1,21 +1,24 @@
 
 using System.ComponentModel.DataAnnotations;
-public class RegisterViewModel {
+public class RegisterViewModel
+{
     [Required]
-    public string FirstName { get; set;} = "";
+    public string FirstName { get; set; } = "";
     [Required]
-    public  string UserName {get;set;} = "";
+    public string UserName { get; set; } = "";
     [Required]
-    public string LastName { get; set;} = "";
+    public string LastName { get; set; } = "";
     [Required]
     [EmailAddress]
-    public  string Email { get; set;} = "";
+    public string Email { get; set; } = "";
 
     [Required]
     [DataType(DataType.Password)]
-    public string Password { get; set;} = "";
+    public string Password { get; set; } = "";
     [Required]
     [Compare("Password")]
-    public  string ConfirmPassword {get;set;} = "";
-    public List<Skill> Skills { get; set;} = [];
+    public string ConfirmPassword { get; set; } = "";
+    public List<Skill>? Skills { get; set; }
+    
 }
+

@@ -27,12 +27,12 @@
       <p class="login-box-msg">Register a new member</p>
       <div class="login-logo">
       </div>
-      <form action="../../index.html" method="post">
+      <form asp-controller = "Admin" asp-action ="Register" method="post">
         <div class="input-group mb-3">
           <input  type="text" class="form-control" placeholder="FirstName" asp-for="FirstName">
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-user"></span>
+              <span asp-validation-for = "FirstName" class="fas fa-user "></span>
             </div>
           </div>
         </div>
@@ -40,7 +40,7 @@
           <input type="text" class="form-control" placeholder="LastName" asp-for="LastName">
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-user"></span>
+              <span asp-validation-for = "LastName" class="fas fa-user"></span>
             </div>
           </div>
         </div>
@@ -48,7 +48,7 @@
           <input type="text" class="form-control" placeholder="UserName" asp-for="UserName">
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-user"></span>
+              <span asp-validation-for = "UserName" class="fas fa-user"></span>
             </div>
           </div>
         </div>
@@ -56,15 +56,16 @@
           <input type="email" class="form-control" placeholder="Email" asp-for="Email">
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
+              <span asp-validation-for = "Email" class="fas fa-envelope"></span>
             </div>
           </div>
         </div>
+      
         <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="Password" asp-for="Password">
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-lock"></span>
+              <span asp-validation-for = "Password" class="fas fa-lock"></span>
             </div>
           </div>
         </div>
@@ -72,10 +73,18 @@
           <input type="text" class="form-control" placeholder="Retype password" asp-for="ConfirmPassword">
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-lock"></span>
+              <span asp-validation-for = "ConfirmPassword" class="fas fa-lock"></span>
             </div>
           </div>
         </div>
+        <div class="form-group">
+        <label>Register As</label>
+        <select  name="select" class="form-control select2" style="width: 100%;">
+          <option value="Employee">Employee</option>
+          <option value="ProjMan">Project Manager</option>
+        </select>
+      </div>
+        
         <div class="row">
           <div class="col-8">
             <div class="icheck-primary">
@@ -113,6 +122,7 @@
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.min.js"></script>
+
 
 
 </body>

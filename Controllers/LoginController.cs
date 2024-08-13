@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 
 public class LoginController : Controller {
     private readonly UserManager<ApplicationUser> _userManager;
-
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly ApplicationDbContext _dbcontext;
@@ -27,10 +26,7 @@ public class LoginController : Controller {
         if (ModelState.IsValid){
             var result = await _signInManager.PasswordSignInAsync(model.UserName,model.Password,isPersistent:false,lockoutOnFailure:false);
             if(result.Succeeded){
-                var user = await _userManager.GetUserAsync(User);
-             if(user == null){
-                return View("error");
-             }
+             var user = await _userManager.GetUserAsync(User);
               if(await _userManager.IsInRoleAsync(user,"Admin")){
                 return RedirectToAction("Register","Admin");
               }

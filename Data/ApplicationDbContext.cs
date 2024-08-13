@@ -15,8 +15,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser,Applicatio
         modelBuilder.Entity<ApplicationUser>().HasMany(t => t.Tasks).WithOne(a => a.ApplicationUser)
         .HasForeignKey(t => t.UserId);
 
-
-        
     }
     public DbSet<Skill> Skill { get; set; }
     public DbSet<Project> Project {get;set;}

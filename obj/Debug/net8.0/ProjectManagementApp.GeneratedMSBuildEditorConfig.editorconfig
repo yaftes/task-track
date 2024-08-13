@@ -26,8 +26,8 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\yafet\dotnetprojects\ProjectManagementApp
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/yafet/dotnetprojects/ProjectManagementApp/Views/Admin/CreateSkill.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ3JlYXRlU2tpbGwuY3NodG1s
+[C:/Users/yafet/dotnetprojects/ProjectManagementApp/Views/Admin/AddSkill.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQWRkU2tpbGwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/yafet/dotnetprojects/ProjectManagementApp/Views/Admin/Register.cshtml]
@@ -44,6 +44,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/yafet/dotnetprojects/ProjectManagementApp/Views/Login/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cTG9naW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/yafet/dotnetprojects/ProjectManagementApp/Views/Project/ProjCreate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFxQcm9qQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/yafet/dotnetprojects/ProjectManagementApp/Views/Shared/Error.cshtml]

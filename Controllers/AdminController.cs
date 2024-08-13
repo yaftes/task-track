@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-[Authorize(Roles = "Admin")]
 public class AdminController : Controller {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
@@ -17,45 +16,50 @@ public class AdminController : Controller {
             this._dbContext = _dbContext;
         }
     
-    public IActionResult Register() {
-        var skills = _dbContext.Skill.ToList();
-        RegisterViewModel model = new RegisterViewModel(){
-            Skills = skills
-        };
-        return View(model);
-    }
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Register(RegisterViewModel model){
-        if (ModelState.IsValid){
-            var user = new ApplicationUser(){
-                FirstName = model.FirstName,    
-                LastName = model.LastName,
-                Email = model.Email,
-                UserName = model.UserName,
-                Skills = _dbContext.Skill.ToList(),
+   [HttpGet]
+public IActionResult Register()
+{
+    RegisterViewModel model = new RegisterViewModel(){
+        Skills = _dbContext.Skill.ToList()
+    };  
 
-            };
-            var result = await _userManager.CreateAsync(user,model.Password);
-            if (result.Succeeded){
-                // add the current user to admin role
-                var res = await _userManager.AddToRoleAsync(user,"Employee");
-                if (res.Succeeded){
-                    return RedirectToAction("Index","Home");
-                }
-                return View(model);
+    return View(model);
+}
+
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Register(RegisterViewModel model,string select)
+{
+    if (ModelState.IsValid)
+    {
+        ApplicationUser user = new ApplicationUser()
+        {
+            FirstName = model.FirstName,
+            LastName = model.LastName,
+            Email = model.Email,
+            UserName = model.UserName,
+            Skills = _dbContext.Skill.ToList(),
+        };
+        var result = await _userManager.CreateAsync(user, model.Password);
+        if (result.Succeeded)
+        {
+            var res = await _userManager.AddToRoleAsync(user, select);
+            if (res.Succeeded)
+            {
+                return RedirectToAction("Login", "Login");
             }
         }
-        return View(model);
-
+        ModelState.AddModelError(string.Empty, "Failed to register user.");
     }
+    return View(model);
+}
     [HttpGet]
-    public IActionResult CreateSkill(){
+    public IActionResult AddSkill(){
         return View();
     }
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult CreateSkill(CreateSkill model){
+    public IActionResult AddSkill(CreateSkill model){
         var check = _dbContext.Skill.FirstOrDefault(x => x.SkillName == model.skillName);
         if (ModelState.IsValid){
             if(check != null){
