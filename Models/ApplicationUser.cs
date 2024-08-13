@@ -12,5 +12,6 @@ public class ApplicationUser : IdentityUser {
     public List<Skill>? Skills {get;set;}
     public List<Project>? Projects {get;set;}
     public List<Task>? Tasks {get;set;} 
+    public List<ProjectMember>? ProjectMembers {get;set;}
     
 }
