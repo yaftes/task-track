@@ -18,7 +18,7 @@ public class RegisterViewModel
     [Required]
     [Compare("Password")]
     public string ConfirmPassword { get; set; } = "";
-    public List<Skill>? Skills { get; set; }
+    public List<Skill> Skills { get; set; } = [];
     
 }
 

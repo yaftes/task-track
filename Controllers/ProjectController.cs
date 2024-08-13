@@ -29,6 +29,8 @@ public class ProjectController : Controller {
                 Description = model.Description,    
                 Created_At = DateTime.UtcNow,
                 Update_Date = DateTime.UtcNow,
+                Start_Date = DateTime.Parse(model.Start_Date),
+                End_Date = DateTime.Parse(model.End_Date),
                 UserId =_userManager.GetUserId(User),
             };
             _dbContext.Project.Add(project);
@@ -39,64 +41,10 @@ public class ProjectController : Controller {
         return View(model);
      }
 
+
+     public IActionResult ProjDetails(){
+        return View();
+     }
+
      
-    //  [HttpGet]
-    //  public IActionResult ProjEdit(int? id){
-    //     var project = _dbContext.Project.FirstOrDefault(p => p.Id == id);
-    //     if (project == null){
-    //         return View("Error");
-    //     }
-    //     return View(project);
-    //  }
-
-    //  [HttpPost]
-    //  [ValidateAntiForgeryToken]
-
-    //  public IActionResult ProjEdit(ProjectModel model){
-    //     var project = _dbContext.Project.FirstOrDefault(p => p.Id == model.Id);
-    //     if(ModelState.IsValid){
-    //         if (project == null){
-    //         return View("Error");
-    //             }
-    //         project.Title = model.Title;
-    //         project.Description = model.Description;    
-    //         project.CreatedDate = DateTime.UtcNow;
-            
-    //     _dbContext.Project.Update(project);
-    //     _dbContext.SaveChanges();
-
-    //     }
-    //     return View(model);
-
-    //  }
-
-    //  [HttpGet]
-    //  public IActionResult ProjDelete(int? id){
-    //     var project = _dbContext.Project.FirstOrDefault(p => p.Id == id);
-    //     if (project == null){
-    //         return View("Error");
-    //     }
-    //     return View(project);
-    //  }
-
-    //  [HttpPost]
-    //  [ValidateAntiForgeryToken]
-
-    //  public IActionResult ProjDelete(int id){
-    //     var project = _dbContext.Project.FirstOrDefault(p => p.Id == id);
-    //     if (project == null){
-    //         return View("Error");
-    //          }
-            
-    //     _dbContext.Project.Remove(project);
-    //     _dbContext.SaveChanges();
-    //         return View(project);
-    //     }
-    //  public IActionResult GetAllProj(){
-    //     List<Project> projects = _dbContext.Project.Where(p => p.UserId == _userManager.GetUserId(User)).ToList();
-    //     return View(projects);  
-    //  }
-    
-
-
 }
