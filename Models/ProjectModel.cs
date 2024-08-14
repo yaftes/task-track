@@ -12,6 +12,14 @@ public class Project {
     public DateTime End_Date {get; set;} 
     public DateTime Update_Date {get; set;}
 
-    
+
+    // Navigation Properties
+    public ApplicationUser? ApplicationUser { get; set; }
+
+    public List<Task>? Tasks {get;set;}
+
+    // Foreign Keys
+    public string? UserId {get;set;}
+
 
 }

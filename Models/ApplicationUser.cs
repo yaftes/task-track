@@ -10,6 +10,12 @@ public class ApplicationUser : IdentityUser {
     public required string LastName { get; set;}
     public DateTime CreatedTime { get; set;}
 
-  
-  
+
+    // Navigation Properties
+    public List<Project>? projects   { get; set;}
+    public Task? Task {get;set;}
+
+
+    // Foreign Keys
+
 }
