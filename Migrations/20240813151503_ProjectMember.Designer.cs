@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ProjectManagementApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240813151503_ProjectMember")]
+    partial class ProjectMember
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -273,9 +276,43 @@ namespace ProjectManagementApp.Migrations
                     b.Property<DateTime>("Update_Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Project");
+                });
+
+            modelBuilder.Entity("ProjectMember", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Joined_At")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("ProjectMember");
                 });
 
             modelBuilder.Entity("Skill", b =>
@@ -338,21 +375,6 @@ namespace ProjectManagementApp.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Task");
-                });
-
-            modelBuilder.Entity("UserProject", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "ProjectId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("UserProject");
                 });
 
             modelBuilder.Entity("ApplicationUserSkill", b =>
@@ -421,6 +443,30 @@ namespace ProjectManagementApp.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Project", b =>
+                {
+                    b.HasOne("ApplicationUser", "ApplicationUser")
+                        .WithMany("Projects")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("ApplicationUser");
+                });
+
+            modelBuilder.Entity("ProjectMember", b =>
+                {
+                    b.HasOne("ApplicationUser", null)
+                        .WithMany("ProjectMembers")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("Project", "Project")
+                        .WithMany("ProjectMembers")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("Task", b =>
                 {
                     b.HasOne("Project", "Project")
@@ -438,37 +484,20 @@ namespace ProjectManagementApp.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("UserProject", b =>
-                {
-                    b.HasOne("Project", "Projects")
-                        .WithMany("UserProjects")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ApplicationUser", "ApplicationUsers")
-                        .WithMany("UserProjects")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUsers");
-
-                    b.Navigation("Projects");
-                });
-
             modelBuilder.Entity("ApplicationUser", b =>
                 {
-                    b.Navigation("Tasks");
+                    b.Navigation("ProjectMembers");
 
-                    b.Navigation("UserProjects");
+                    b.Navigation("Projects");
+
+                    b.Navigation("Tasks");
                 });
 
             modelBuilder.Entity("Project", b =>
                 {
-                    b.Navigation("Tasks");
+                    b.Navigation("ProjectMembers");
 
-                    b.Navigation("UserProjects");
+                    b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618
         }

@@ -31,20 +31,17 @@ public class ProjectController : Controller {
                 Update_Date = DateTime.UtcNow,
                 Start_Date = DateTime.Parse(model.Start_Date),
                 End_Date = DateTime.Parse(model.End_Date),
-                UserId =_userManager.GetUserId(User),
+                
             };
             _dbContext.Project.Add(project);
             _dbContext.SaveChanges();
             return RedirectToAction("Index","Home");
         }
-
         return View(model);
      }
 
-
-     public IActionResult ProjDetails(){
+     [HttpGet]
+     public IActionResult AllProjects(){
         return View();
-     }
-
-     
+     }     
 }

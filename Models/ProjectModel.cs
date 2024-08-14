@@ -1,6 +1,4 @@
-
 using System.ComponentModel.DataAnnotations;
-
 public class Project {
     [Key]
     public int Id { get; set; }
@@ -12,10 +10,7 @@ public class Project {
     public DateTime Start_Date { get; set;}   
     public DateTime End_Date {get; set;} 
     public DateTime Update_Date {get; set;}
-    public ApplicationUser? ApplicationUser { get; set; }   
-    public string? UserId {get;set;}
-    public List<Task>? Tasks {get;set;}
-    public List<ProjectMember>? ProjectMembers {get;set;}
+  
 
 
 }
