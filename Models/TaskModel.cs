@@ -12,9 +12,9 @@ public class Task {
     public DateTime Start_Date { get; set;}   
     public DateTime End_Date {get; set;} 
     public DateTime Update_Date {get; set;}
+    // 
     public Project? Project {get;set;}
-    public ApplicationUser? ApplicationUser {get;set;}
-    public int ProjectId {get;set;}
-    public string? UserId {get;set;}
-   
+    
+
+ 
 }

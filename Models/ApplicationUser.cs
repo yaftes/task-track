@@ -10,5 +10,6 @@ public class ApplicationUser : IdentityUser {
     public required string LastName { get; set;}
     public DateTime CreatedTime { get; set;}
 
-      
+  
+  
 }

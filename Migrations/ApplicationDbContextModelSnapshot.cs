@@ -124,21 +124,6 @@ namespace ProjectManagementApp.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("ApplicationUserSkill", b =>
-                {
-                    b.Property<string>("ApplicationUsersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("SkillsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ApplicationUsersId", "SkillsId");
-
-                    b.HasIndex("SkillsId");
-
-                    b.ToTable("ApplicationUserSkill");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -314,7 +299,7 @@ namespace ProjectManagementApp.Migrations
                     b.Property<DateTime>("End_Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ProjectId")
+                    b.Property<int?>("ProjectId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Start_Date")
@@ -328,46 +313,11 @@ namespace ProjectManagementApp.Migrations
                     b.Property<DateTime>("Update_Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ProjectId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Task");
-                });
-
-            modelBuilder.Entity("UserProject", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "ProjectId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("UserProject");
-                });
-
-            modelBuilder.Entity("ApplicationUserSkill", b =>
-                {
-                    b.HasOne("ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("ApplicationUsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Skill", null)
-                        .WithMany()
-                        .HasForeignKey("SkillsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -424,51 +374,10 @@ namespace ProjectManagementApp.Migrations
             modelBuilder.Entity("Task", b =>
                 {
                     b.HasOne("Project", "Project")
-                        .WithMany("Tasks")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ApplicationUser", "ApplicationUser")
-                        .WithMany("Tasks")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("ApplicationUser");
+                        .WithMany()
+                        .HasForeignKey("ProjectId");
 
                     b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("UserProject", b =>
-                {
-                    b.HasOne("Project", "Projects")
-                        .WithMany("UserProjects")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ApplicationUser", "ApplicationUsers")
-                        .WithMany("UserProjects")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUsers");
-
-                    b.Navigation("Projects");
-                });
-
-            modelBuilder.Entity("ApplicationUser", b =>
-                {
-                    b.Navigation("Tasks");
-
-                    b.Navigation("UserProjects");
-                });
-
-            modelBuilder.Entity("Project", b =>
-                {
-                    b.Navigation("Tasks");
-
-                    b.Navigation("UserProjects");
                 });
 #pragma warning restore 612, 618
         }

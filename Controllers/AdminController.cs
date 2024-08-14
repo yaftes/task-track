@@ -20,7 +20,6 @@ public class AdminController : Controller {
 public IActionResult Register()
 {
     RegisterViewModel model = new RegisterViewModel(){
-        Skills = _dbContext.Skill.ToList()
     };  
 
     return View(model);
@@ -38,7 +37,6 @@ public async Task<IActionResult> Register(RegisterViewModel model,string select)
             LastName = model.LastName,
             Email = model.Email,
             UserName = model.UserName,
-            Skills = _dbContext.Skill.ToList(),
         };
         var result = await _userManager.CreateAsync(user, model.Password);
         if (result.Succeeded)

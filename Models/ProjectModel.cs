@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 public class Project {
     [Key]
     public int Id { get; set; }
@@ -10,7 +11,7 @@ public class Project {
     public DateTime Start_Date { get; set;}   
     public DateTime End_Date {get; set;} 
     public DateTime Update_Date {get; set;}
-  
 
+    
 
 }

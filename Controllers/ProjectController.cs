@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
+[Authorize(Roles = "Employee")]
 public class ProjectController : Controller {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
@@ -22,26 +23,15 @@ public class ProjectController : Controller {
      [HttpPost]
      [ValidateAntiForgeryToken]
      public async Task<IActionResult> ProjCreate(ProjectModel model){
-        if (ModelState.IsValid){
-            
-            Project project = new Project(){
-                Title = model.Title,
-                Description = model.Description,    
-                Created_At = DateTime.UtcNow,
-                Update_Date = DateTime.UtcNow,
-                Start_Date = DateTime.Parse(model.Start_Date),
-                End_Date = DateTime.Parse(model.End_Date),
-                
-            };
-            _dbContext.Project.Add(project);
-            _dbContext.SaveChanges();
-            return RedirectToAction("Index","Home");
-        }
+       
         return View(model);
      }
 
      [HttpGet]
      public IActionResult AllProjects(){
         return View();
-     }     
+     }  
+        
+
+
 }
