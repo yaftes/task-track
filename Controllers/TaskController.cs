@@ -15,6 +15,7 @@ public class TaskController : Controller {
             this._roleManager = _roleManager;
             this._dbContext = _dbContext;
         }
+
     
     public async Task<IActionResult> TaskAsign(){
         TaskModel taskModel = new TaskModel(){

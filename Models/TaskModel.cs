@@ -12,14 +12,10 @@ public class Task {
     public DateTime Start_Date { get; set;}   
     public DateTime End_Date {get; set;} 
     public DateTime Update_Date {get; set;}
-
-
     // Navigation Properties
-    public ApplicationUser? ApplicationUser { get; set;}
-    public Project? Project {get;set;}
+
 
     // Foreign Keys
-    public string? Assigned_to { get; set;}
-    public int ProjectId {get;set;}
+
 
 }

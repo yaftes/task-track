@@ -18,6 +18,8 @@ public class TaskModel {
     public string Description { get; set; } = "";
     public string Start_Date {get; set;} = "";
     public string End_Date {get; set;} = "";
+    public string SelectedUserName {get;set;} ="";
+    
     public List<ApplicationUser>? AvailableUsers {get;set;}
 
     
