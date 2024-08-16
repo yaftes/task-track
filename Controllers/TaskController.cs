@@ -17,15 +17,13 @@ public class TaskController : Controller {
         }
 
     
-    public async Task<IActionResult> TaskAsign(){
-        TaskModel taskModel = new TaskModel(){
-           AvailableUsers = _userManager.Users.ToList(),
-        };
-        return View(taskModel);
+    public async Task<IActionResult> TaskAssign(){
+        
+        return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult> TaskAsign(TaskModel model){
+    public async Task<IActionResult> TaskAssign(TaskModel model){
 
         if (ModelState.IsValid){
             Task task = new Task(){

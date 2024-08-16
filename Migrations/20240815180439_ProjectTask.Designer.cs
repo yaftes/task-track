@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ProjectManagementApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240815180439_ProjectTask")]
+    partial class ProjectTask
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -346,9 +349,6 @@ namespace ProjectManagementApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Assigned_to")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("Created_At")
                         .HasColumnType("datetime2");
 
@@ -374,8 +374,6 @@ namespace ProjectManagementApp.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Assigned_to");
 
                     b.HasIndex("ProjectId");
 
@@ -505,17 +503,11 @@ namespace ProjectManagementApp.Migrations
 
             modelBuilder.Entity("Task", b =>
                 {
-                    b.HasOne("ApplicationUser", "ApplicationUser")
-                        .WithMany("Task")
-                        .HasForeignKey("Assigned_to");
-
                     b.HasOne("Project", "Project")
                         .WithMany("Tasks")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Project");
                 });
@@ -535,11 +527,6 @@ namespace ProjectManagementApp.Migrations
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("Skill");
-                });
-
-            modelBuilder.Entity("ApplicationUser", b =>
-                {
-                    b.Navigation("Task");
                 });
 
             modelBuilder.Entity("Project", b =>

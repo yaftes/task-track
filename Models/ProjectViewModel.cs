@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 public class ProjectModel {
+    public int Id { get; set; }
     [Required]   
     [StringLength(100)] 
     public string Title { get; set; } = "";

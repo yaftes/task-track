@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ProjectManagementApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240815130003_AddCreatedByToProject")]
+    partial class AddCreatedByToProject
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -346,9 +349,6 @@ namespace ProjectManagementApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Assigned_to")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("Created_At")
                         .HasColumnType("datetime2");
 
@@ -358,9 +358,6 @@ namespace ProjectManagementApp.Migrations
 
                     b.Property<DateTime>("End_Date")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("Start_Date")
                         .HasColumnType("datetime2");
@@ -374,10 +371,6 @@ namespace ProjectManagementApp.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Assigned_to");
-
-                    b.HasIndex("ProjectId");
 
                     b.ToTable("Task");
                 });
@@ -503,23 +496,6 @@ namespace ProjectManagementApp.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("Task", b =>
-                {
-                    b.HasOne("ApplicationUser", "ApplicationUser")
-                        .WithMany("Task")
-                        .HasForeignKey("Assigned_to");
-
-                    b.HasOne("Project", "Project")
-                        .WithMany("Tasks")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("Project");
-                });
-
             modelBuilder.Entity("UserSkill", b =>
                 {
                     b.HasOne("Skill", "Skill")
@@ -535,16 +511,6 @@ namespace ProjectManagementApp.Migrations
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("Skill");
-                });
-
-            modelBuilder.Entity("ApplicationUser", b =>
-                {
-                    b.Navigation("Task");
-                });
-
-            modelBuilder.Entity("Project", b =>
-                {
-                    b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618
         }

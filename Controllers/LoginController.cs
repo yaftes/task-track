@@ -34,7 +34,7 @@ public class LoginController : Controller {
                 return RedirectToAction("Register","SuperAdmin");
               }   
               else{
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("AllProjects","Project");
               } 
             }
             else{

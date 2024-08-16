@@ -1,24 +1,26 @@
-@using ProjectManagementApp.Models
-@model ProjectModel
-<!-- Content Header (Page header) -->
 <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Create a new Project</h1>
+            <h1>Project Add</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Project Add</li>
+            </ol>
           </div>
         </div>
       </div><!-- /.container-fluid -->
 </section>
-<!-- Main content -->
 
-    <section class="content ps-5">
-      <form asp-controller = "Project" asp-action = "ProjCreate" method="post">
-      <div class="row" >
-        <div class="col-md-8 ps-2" >
-          <div class="card card-secondary">
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card card-primary">
             <div class="card-header">
-              <h3 class="card-title">Project Details</h3>
+              <h3 class="card-title">General</h3>
 
               <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -29,56 +31,83 @@
             <div class="card-body">
               <div class="form-group">
                 <label for="inputName">Project Name</label>
-                <input asp-for ="Title" type="text" id="inputName" class="form-control">
+                <input type="text" id="inputName" class="form-control">
               </div>
-
               <div class="form-group">
                 <label for="inputDescription">Project Description</label>
-                <textarea asp-for="Description" id="inputDescription" class="form-control" rows="4"></textarea>
+                <textarea id="inputDescription" class="form-control" rows="4"></textarea>
               </div>
-
-                <div class="form-group">
-                  <label>Project Start Date</label>
+              <div class="form-group">
+                  <label>Date and time:</label>
                     <div class="input-group date" id="reservationdatetime" data-target-input="nearest">
-                        <input asp-for ="Start_Date" type="text" class="form-control datetimepicker-input" data-target="#reservationdatetime"/>
+                        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdatetime"/>
                         <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
                     </div>
                 </div>
 
+                  <!-- Date and time -->
                 <div class="form-group">
-                  <label>Project End Date</label>
+                  <label>Date and time:</label>
                     <div class="input-group date" id="reservationdatetime" data-target-input="nearest">
-                        <input asp-for = "End_Date" type="text" class="form-control datetimepicker-input" data-target="#reservationdatetime"/>
+                        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdatetime"/>
                         <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
                     </div>
                 </div>
-              
-              <!-- /.card-body -->
-            </div>
-
-
-            
+              <div class="form-group">
+                <label for="inputClientCompany">Client Company</label>
+                <input type="text" id="inputClientCompany" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="inputProjectLeader">Project Leader</label>
+                <input type="text" id="inputProjectLeader" class="form-control">
+              </div>
             </div>
             <!-- /.card-body -->
           </div>
-          
-        <div class="col-8 ">
-          <input type="submit" value="Create new Project" class="btn btn-success float-right">
-          <a href="#" class="btn btn-secondary float-right">Cancel</a>
-        </div>
           <!-- /.card -->
         </div>
+      
       </div>
-         </form>
+      <div class="row">
+        <div class="col-12">
+          <a href="#" class="btn btn-secondary">Cancel</a>
+          <input type="submit" value="Create new Project" class="btn btn-success float-right">
+        </div>
+      </div>
     </section>
- 
-  <!-- jQuery -->
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
 
-  <script src="../../plugins/jquery/jquery.min.js"></script>
+  <footer class="main-footer">
+    <div class="float-right d-none d-sm-block">
+      <b>Version</b> 3.2.0
+    </div>
+    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../../dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../dist/js/demo.js"></script>
+!-- jQuery -->
+<script src="../../plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- Select2 -->
