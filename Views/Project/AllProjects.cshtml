@@ -1,5 +1,5 @@
 @using ProjectManagementApp.Models
-@model List<Project>
+@model ProjectDetail
 <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
@@ -54,7 +54,7 @@
                   </tr>
               </thead>
               <tbody>
-                @foreach(var project in Model){
+                @foreach(var project in Model.Projects){
                   <tr>
                       <td>
                           #

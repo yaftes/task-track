@@ -12,9 +12,9 @@ public class ApplicationUser : IdentityUser {
 
 
     // Navigation Properties
-    public virtual List<Project> Project { get; set;} = new();
-    public virtual List<Skill> Skill { get; set;} = new();
-    public virtual List<Task> Task {get;set;} = new();
+    public virtual List<Project> Projects { get; set;} = new();
+    public virtual List<Skill> Skills { get; set;} = new();
+    public virtual List<Task> Tasks {get;set;} = new();
 
     // Foreign Keys
 

@@ -1,11 +1,11 @@
 @using ProjectManagementApp.Models
-@model Project
+@model ProjectDetail
 
 <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-      <h3 class="text-secondary"><i class="fas fa-project-diagram"></i>&nbsp;&nbsp;@Model.Title</h3>
+      <h3 class="text-secondary"><i class="fas fa-project-diagram"></i>&nbsp;&nbsp;@Model.project.Title</h3>
           </div>
         
         </div>
@@ -29,7 +29,7 @@
                   <div class="info-box bg-light">
                     <div class="info-box-content">
                       <span class="info-box-text text-center text-muted">Start Date</span>
-                      <span class="info-box-number text-center text-muted mb-0">@Model.Start_Date</span>
+                      <span class="info-box-number text-center text-muted mb-0">@Model.project.Start_Date</span>
                     </div>
                   </div>
                 </div>
@@ -37,7 +37,7 @@
                   <div class="info-box bg-light">
                     <div class="info-box-content">
                       <span class="info-box-text text-center text-muted">End Date</span>
-                      <span class="info-box-number text-center text-muted mb-0">@Model.End_Date</span>
+                      <span class="info-box-number text-center text-muted mb-0">@Model.project.End_Date</span>
                     </div>
                   </div>
                 </div>
@@ -118,14 +118,14 @@
             </div>
             <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
           <h3 class="text-secondary"><i class="fas fa-info-circle"></i>&nbsp;Description</h3>
-              <p class="text-muted">@Model.Description</p>
+              <p class="text-muted">@Model.project.Description</p>
               <br>
               <div class="text-muted">
                 <p class="text-sm">Client Company
                   <b class="d-block">Deveint Inc</b>
                 </p>
                 <p class="text-sm">Project Leader
-                  <b class="d-block">@Model.Created_By</b>
+                  <b class="d-block">@Model.project.Created_By</b>
                 </p>
               </div>
 
@@ -149,7 +149,7 @@
               </ul>
               <div class="text-center mt-5 mb-3">
        
-                <a asp-controller="Project" asp-action = "ProjEdit" asp-route-Id = "@Model.Id"class="btn btn-sm btn-primary">Edit</a>
+                <a asp-controller="Project" asp-action = "ProjEdit" asp-route-Id = "@Model.project.Id"class="btn btn-sm btn-primary">Edit</a>
           
                 <a asp-controller="Task" asp-action ="TaskAssign" class="btn btn-sm btn-warning">Task Assign</a>
               </div>

@@ -73,32 +73,40 @@ public class ProjectController : Controller {
      
      [HttpGet]
      public async Task<IActionResult> AllProjects(){
-
-      var curruser = await _userManager.GetUserAsync(User);
-      // select project id from project member that matches with current user
-      // then using that project id retrieve all project that matches
+      var curruser = await _userManager.GetUserAsync(User); 
       var projectIds = await _dbContext.ProjectMember
         .Where(pm => pm.UserId == curruser.Id)
         .Select(pm => pm.ProjId)
         .ToListAsync();
-
-// Retrieve projects based on the retrieved IDs
-        var projects = await _dbContext.Project
-            .Where(p => projectIds.Contains(p.Id))
-            .ToListAsync();
-        return View(projects);
+        var _projects = await _dbContext.Project
+        .Where(p => projectIds.Contains(p.Id))
+        .ToListAsync();
+        ProjectDetail projectDetails = new ProjectDetail(){
+            Projects = _projects,
+        };
+    
+        return View(projectDetails);
      } 
 
      [HttpGet]
      // used for displaying project Details
      public async Task<IActionResult> ProjectDetails(int? id){
-
-        var project = _dbContext.Project.FirstOrDefault(p=>p.Id == id);
-  
-        return View(project);
+        var _project = _dbContext.Project.FirstOrDefault(p=>p.Id == id);
+        var usersInProject = await _dbContext.ProjectMember
+        .Where(pm => pm.ProjId == id)
+        .Select(pm => pm.UserId)
+        .Distinct()
+        .ToListAsync();
+        var users = await _dbContext.Users
+        .Where(u => usersInProject.Contains(u.Id))
+        .ToListAsync();
+        ProjectDetail projectDetails = new ProjectDetail(){
+            project = _project,
+            Team_members = users,
+        };
+            
+        return View(projectDetails);
      } 
-
-
 
      public IActionResult DashBoard(){
         return View();
