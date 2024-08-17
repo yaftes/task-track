@@ -5,13 +5,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Create a new Project</h1>
+            <h1>Update Project Info</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
 </section>
 <!-- Main content -->
-<form asp-controller = "Project" asp-action = "ProjCreate" method="post">
+<form asp-controller = "Project" asp-action = "ProjEdit" method="post">
     <section class="content ps-5">
       <div class="row" >
         <div class="col-md-8 ps-2" >
@@ -26,20 +26,20 @@
               </div>
             </div>
 
-
+            <input asp-for ="Id" type="hidden" id="inputName" class="form-control">
             <div class="card-body">
               <div class="form-group">
-                <label for="inputName">Project Name</label>
+                <label asp-for="Title">Title</label>
                 <input asp-for ="Title" type="text" id="inputName" class="form-control">
               </div>
 
               <div class="form-group">
-                <label for="inputDescription">Project Description</label>
+                <label asp-for="Description">Project Description</label>
                 <textarea asp-for="Description" id="inputDescription" class="form-control" rows="4"></textarea>
               </div>
 
                 <div class="form-group">
-                  <label>Project Start Date</label>
+                  <label asp-for="Start_Date">Project Start Date</label>
                     <div class="input-group date" id="reservationdatetime" data-target-input="nearest">
                         <input asp-for ="Start_Date" type="text" class="form-control datetimepicker-input" data-target="#reservationdatetime"/>
                         <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
@@ -49,7 +49,7 @@
                 </div>
 
                 <div class="form-group">
-                  <label>Project End Date</label>
+                  <label asp-for="End_Date">Project End Date</label>
                     <div class="input-group date" id="reservationdatetime" data-target-input="nearest">
                         <input asp-for = "End_Date" type="text" class="form-control datetimepicker-input" data-target="#reservationdatetime"/>
                         <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
@@ -65,7 +65,7 @@
           </div>
           
         <div class="col-8 ">
-          <input type="submit" value="Create new Project" class="btn btn-success float-right">
+          <input type="submit" value="Update" class="btn btn-success float-right">
           <a href="#" class="btn btn-secondary float-right">Cancel</a>
         </div>
           <!-- /.card -->

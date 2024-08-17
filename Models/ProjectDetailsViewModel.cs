@@ -4,4 +4,5 @@ public class ProjectDetail {
     public List<ApplicationUser>? Team_members {get;set;}
     public List<Project>? Projects {get;set;}
 
+
 }

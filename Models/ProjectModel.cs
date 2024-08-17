@@ -14,11 +14,9 @@ public class Project {
 
     public string Created_By { get; set;}
 
-
     // Navigation Properties
     public  List<ApplicationUser>? ApplicationUsers { get; set;} = new ();
     public  List<Task> Tasks { get; set;} = new();
-
 
     // Foreign Keys
 

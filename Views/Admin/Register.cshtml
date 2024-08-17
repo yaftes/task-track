@@ -77,6 +77,8 @@
             </div>
           </div>
         </div>
+
+
         <div class="form-group">
         <label>Register As</label>
         <select  name="select" class="form-control select2" style="width: 100%;">
@@ -84,7 +86,20 @@
           <option value="ProjMan">Project Manager</option>
         </select>
       </div>
-        
+
+    
+    @* <div class="form-group">
+        <label>Skills</label>
+        @foreach (var skill in Model.ListofSkill)
+        {
+            <div class="form-check">
+                <input type="checkbox" asp-for="SelectedSkills" value="@skill.Id" class="form-check-input">
+                <label class="form-check-label">@skill.SkillName</label>
+            </div>
+        }
+    </div> *@
+      
+  
         <div class="row">
           <div class="col-8">
             <div class="icheck-primary">
@@ -104,7 +119,7 @@
 
       <div class="social-auth-links text-center">
         <p>- OR -</p>
-        <a asp-controller = "Admin" asp-action = "CreateSkill" class="btn btn-block btn-primary">
+        <a asp-controller = "Admin" asp-action = "AddSkill" class="btn btn-block btn-primary">
           <i class="fab fa-plus mr-2"></i>
           Add New Skill
         </a>

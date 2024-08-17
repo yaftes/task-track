@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 [Authorize(Roles = "Admin")]
 public class AdminController : Controller {
@@ -20,9 +21,10 @@ public class AdminController : Controller {
             [HttpGet]
             public IActionResult Register()
             {
-                RegisterViewModel model = new RegisterViewModel(){
-                };  
-
+                var model = new RegisterViewModel(){
+                    ListofSkill = _dbContext.Skill.ToList(),
+                };
+                
                 return View(model);
             }
 
@@ -38,11 +40,15 @@ public class AdminController : Controller {
                         LastName = model.LastName,
                         Email = model.Email,
                         UserName = model.UserName,
+                        Skills = _dbContext.Skill.ToList(),
+                        
                     };
+                    
                     var result = await _userManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
                         await _userManager.AddToRoleAsync(user,select);
+
                         return RedirectToAction("Login", "Login");
 
                     }

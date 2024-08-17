@@ -13,11 +13,13 @@ public class Task {
     public DateTime Start_Date { get; set;}   
     public DateTime End_Date {get; set;} 
     public DateTime Update_Date {get; set;}
+
+    
     // Navigation Properties
     public Project? Project { get; set;} 
 
     public ApplicationUser? ApplicationUser { get; set;}
-    
+
     // Foreign Keys
 
     [ForeignKey(nameof(Project))]
@@ -25,6 +27,23 @@ public class Task {
 
     [ForeignKey(nameof(ApplicationUser))]
     public string? Assigned_to {get;set;}
+
+
+}
+
+
+public class TaskModel {
+
+    [Required]
+    [StringLength(100)]
+    public string Title { get; set; } = "";
+    [Required]
+    public string Description { get; set; } = "";
+    public string? Start_Date { get; set;}   
+    public string? End_Date {get; set;} 
+    public List<ApplicationUser>? AvailableUsers {get;set;}
+
+    public ApplicationUser? SelectedUser {get;set;}
 
 
 }

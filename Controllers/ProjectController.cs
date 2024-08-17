@@ -63,8 +63,29 @@ public class ProjectController : Controller {
       [HttpGet]
      public async Task<IActionResult> ProjEdit(int id){
         var project = _dbContext.Project.FirstOrDefault(p=>p.Id == id);
-        
-         return View(project);
+        ProjectModel model = new ProjectModel(){
+            Id = project.Id,
+            Title = project.Title,
+            Description = project.Description,
+            Start_Date = project.Start_Date.ToString("MM/dd/yyyy HH:mm"),
+            End_Date = project.End_Date.ToString("MM/dd/yyyy HH:mm"),
+
+        };
+         return View(model);
+     }
+     [HttpPost]
+      public async Task<IActionResult> ProjEdit(ProjectModel model){
+        var currpro = _dbContext.Project.FirstOrDefault(p => p.Id == model.Id);
+        currpro.Title = model.Title;    
+        currpro.Description = model.Description;
+        currpro.Start_Date = DateTime.Parse(model.Start_Date);
+        currpro.End_Date = DateTime.Parse(model.End_Date);
+
+        _dbContext.Project.Update(currpro);
+        await _dbContext.SaveChangesAsync();
+         return RedirectToAction("ProjectDetails","Project",new{
+            Id = model.Id,
+         });
      }
 
      public async Task<IActionResult> ProjDelete(){
@@ -81,9 +102,13 @@ public class ProjectController : Controller {
         var _projects = await _dbContext.Project
         .Where(p => projectIds.Contains(p.Id))
         .ToListAsync();
+        
         ProjectDetail projectDetails = new ProjectDetail(){
-            Projects = _projects,
+            // Projects = _projects,  
+            Projects = _projects
+            
         };
+
     
         return View(projectDetails);
      } 

@@ -8,7 +8,6 @@ public class Skill {
     public string SkillName { get; set; } = "";
 
     // Navigation Properties
-
     public virtual List<ApplicationUser> ApplicationUser { get; set; }   = new ();
     
 
