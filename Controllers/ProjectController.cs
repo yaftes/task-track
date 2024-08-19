@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-
 [Authorize(Roles = "ProjMan")]
 public class ProjectController : Controller {
     private readonly UserManager<ApplicationUser> _userManager;
@@ -20,32 +19,39 @@ public class ProjectController : Controller {
    
      
      [HttpGet]
-     public async Task<IActionResult> ProjCreate(){
-        return View();
+     public IActionResult ProjCreate(){
+        ProjectModel model = new ProjectModel();
+        return View(model);
      }
+
      [HttpPost]
-     [ValidateAntiForgeryToken]
+
      public async Task<IActionResult> ProjCreate(ProjectModel model){
 
         var curruser = await _userManager.GetUserAsync(User);
-      
+        if (curruser == null){
+            return View();
+        }
          if (ModelState.IsValid){ 
             bool check = _dbContext.Project.Any(p => p.Title == model.Title);
             if(check){
                 ModelState.AddModelError(string.Empty, "Already Exits");
                 return View();
             }
+
             Project project = new Project(){
                 Title = model.Title,
                 Description = model.Description,
                 Created_At = DateTime.UtcNow,
-                Start_Date = DateTime.Parse(model.Start_Date),
-                End_Date = DateTime.Parse(model.End_Date),
-                Created_By = curruser.FirstName + " " + curruser.LastName,
+                Start_Date = DateTime.UtcNow,
+                End_Date = DateTime.UtcNow,
+                Update_Date = DateTime.UtcNow,
+                Created_By = curruser.FirstName,
             };
-            // add the current user to project Member with project id
+
             _dbContext.Project.Add(project);
             _dbContext.SaveChanges();
+
             ProjectMember projectMember = new ProjectMember(){
                 UserId = curruser.Id,
                 ProjId = project.Id,
@@ -54,10 +60,9 @@ public class ProjectController : Controller {
             _dbContext.SaveChanges();
 
             return RedirectToAction("AllProjects","Project");
-
          }
          
-        return View(model);
+        return View();
      }
 
       [HttpGet]

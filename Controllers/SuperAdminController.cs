@@ -34,15 +34,14 @@ public class SuperAdminController : Controller {
             };
             var result = await _userManager.CreateAsync(user,model.Password);
             if (result.Succeeded){
-                // add the current user to admin role
-                var res = await _userManager.AddToRoleAsync(user,"Admin");
-                if (res.Succeeded){
-                    return RedirectToAction("Index","Home");
-                }
-                return View(model);
+
+                var res = await _userManager.AddToRoleAsync(user,"Super");
+        
+                return RedirectToAction("Login","Login");
+
             }
         }
-        return View(model);
+        return View();
 
     }
 }

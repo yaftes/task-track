@@ -21,17 +21,14 @@
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
-  <div class="login-logo">
-    <a href="#"><b>Well Come</b>Back</a>
-  </div>
   <!-- /.login-logo -->
-  <div class="card">
+  <div class="card mt-2">
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in</p>
 
       <form method="post">
 
-        <div class="input-group mb-3">
+        <div class="input-group">
           <input type="text" class="form-control" placeholder="UserName" asp-for = "UserName">
           <div class="input-group-append">
             <div class="input-group-text">
@@ -39,8 +36,9 @@
             </div>
           </div>
         </div>
+        <span asp-validation-for="UserName" class="text-danger"></span>
 
-        <div class="input-group mb-3">
+        <div class="input-group mt-3">
           <input type="text" class="form-control" placeholder="Password" asp-for="Password">
           <div class="input-group-append">
             <div class="input-group-text">
@@ -48,9 +46,10 @@
             </div>
           </div>
         </div>
+        <span asp-validation-for="Password" class="text-danger"></span>
 
         <div class="row">
-          <div class="col-8">
+          <div class="col-8 mt-4">
             <div class="icheck-primary">
               <input type="checkbox" id="remember">
               <label for="remember">
@@ -59,9 +58,10 @@
             </div>
           </div>
           <!-- /.col -->
-          <div class="col-4">
+          <div class="col-4 mt-4">
             <button type="submit" class="btn btn-primary btn-block">Log In</button>
-          </div>
+          </div>-
+          
           <!-- /.col -->
         </div>
       </form>

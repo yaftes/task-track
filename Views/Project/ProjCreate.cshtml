@@ -1,6 +1,6 @@
 @using ProjectManagementApp.Models
 @model ProjectModel
-<!-- Content Header (Page header) -->
+
 <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
@@ -12,12 +12,16 @@
 </section>
 <!-- Main content -->
 
-    <section class="content ps-5">
-      <form asp-controller = "Project" asp-action = "ProjCreate" method="post">
+    <section class="content">
+      <form asp-controller = "Project" asp-action="ProjCreate" method="post">
+
       <div class="row" >
         <div class="col-md-8 ps-2" >
           <div class="card card-secondary">
+
+
             <div class="card-header">
+    
               <h3 class="card-title">Project Details</h3>
 
               <div class="card-tools">
@@ -26,59 +30,73 @@
                 </button>
               </div>
             </div>
+
+
             <div class="card-body">
-              <div class="form-group">
-                <label for="inputName">Project Name</label>
-                <input asp-for ="Title" type="text" id="inputName" class="form-control">
-              </div>
 
-              <div class="form-group">
-                <label for="inputDescription">Project Description</label>
-                <textarea asp-for="Description" id="inputDescription" class="form-control" rows="4"></textarea>
-              </div>
+          
 
-                <div class="form-group">
-                  <label>Project Start Date</label>
+            <div class="form-group">
+                <label asp-for ="Title">Project Name</label>
+                <input asp-for ="Title" type="text" class="form-control">
+                <div class="input-group-text">
+              <span asp-validation-for = "Title" class="fas fa-user "></span>
+            </div>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="Description">Project Description</label>
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                <div class="input-group-text">
+              <span asp-validation-for = "Description" class="fas fa-user "></span>
+            </div>
+            </div>
+
+            <div class="form-group">
+                  <label asp-for ="Start_Date">Project Start Date</label>
                     <div class="input-group date" id="reservationdatetime" data-target-input="nearest">
                         <input asp-for ="Start_Date" type="text" class="form-control datetimepicker-input" data-target="#reservationdatetime"/>
                         <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
                     </div>
-                </div>
+            </div> 
 
-                <div class="form-group">
-                  <label>Project End Date</label>
+
+
+               <div class="form-group">
+                  <label asp-for = "End_Date" >Project End Date</label>
                     <div class="input-group date" id="reservationdatetime" data-target-input="nearest">
                         <input asp-for = "End_Date" type="text" class="form-control datetimepicker-input" data-target="#reservationdatetime"/>
                         <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div>
                     </div>
-                </div>
+              </div> 
+
+            <div class="col-8 ">
+                <button type="submit">Create</button>
+                <a href="#" class="btn btn-secondary float-right">Cancel</a>
+            </div>
               
+          
+
               <!-- /.card-body -->
             </div>
 
-
+            
             
             </div>
             <!-- /.card-body -->
           </div>
-          
-        <div class="col-8 ">
-          <input type="submit" value="Create new Project" class="btn btn-success float-right">
-          <a href="#" class="btn btn-secondary float-right">Cancel</a>
+        
         </div>
-          <!-- /.card -->
-        </div>
-      </div>
-         </form>
+      </form>
     </section>
  
   <!-- jQuery -->
-
-  <script src="../../plugins/jquery/jquery.min.js"></script>
+<script src="../../plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- Select2 -->
@@ -238,4 +256,4 @@
     myDropzone.removeAllFiles(true)
   }
   // DropzoneJS Demo Code End
-</script>
+</script> 

@@ -3,19 +3,22 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
 [Authorize(Roles = "Admin")]
 public class AdminController : Controller {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly ApplicationDbContext _dbContext;
+
+    private readonly SignInManager<ApplicationUser> _signInManager;
     public AdminController(
         UserManager<ApplicationUser> _userManager,
         RoleManager<ApplicationRole> _roleManager,
+        SignInManager<ApplicationUser> _signInManager,
         ApplicationDbContext _dbContext){
             this._userManager = _userManager;
             this._roleManager = _roleManager;
             this._dbContext = _dbContext;
+            this._signInManager = _signInManager;
         }
     
             [HttpGet]
@@ -64,22 +67,25 @@ public class AdminController : Controller {
         [HttpPost]
         public async Task<IActionResult> AddSkill(CreateSkill model){
             if (ModelState.IsValid){
-                bool check = _dbContext.Skill.Any(s => s.SkillName == model.skillName); 
+                 bool check = _dbContext.Skill.Any(s => s.SkillName == model.skillName); 
                 if(!check){
                     Skill skill = new Skill(){
                         SkillName = model.skillName,
                     };
-                    _dbContext.Skill.Add(skill);
-                    _dbContext.SaveChanges();
+                     _dbContext.Skill.Add(skill);
+                    await _dbContext.SaveChangesAsync();
+         
                     return View();
                 }
                 else {
                     ModelState.AddModelError(string.Empty,"Already Exists");
                     return View();
                 }
-              
+
             }
             return View();
         }
-
+        
 }
+        
+

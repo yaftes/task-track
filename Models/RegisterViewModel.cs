@@ -18,6 +18,8 @@ public class RegisterViewModel
     [Required]
     [Compare("Password")]
     public string ConfirmPassword { get; set; } = "";
+    
+    public string OldPassword {get;set;} = "";
 
     public List<Skill>? ListofSkill {get;set;}
     public List<int> SelectedSkills { get; set; } = new List<int>();
