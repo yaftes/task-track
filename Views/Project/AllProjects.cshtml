@@ -13,22 +13,24 @@
             </ol>
           </div>
         </div>
-      </div><!-- /.container-fluid -->
+      </div>  
 </section>
-<a asp-controller = "Project" class="btn btn-primary btn-sm"  asp-action = "ProjCreate">Create New Project</a>
+
+<a asp-controller = "Project" class="btn btn-primary btn-sm"  asp-action = "ProjectCreate">Create New Project</a>
 <br>
 <hr>
     <!-- Main content -->
     <section class="content">
 
+<div class="row">
       <!-- Default box -->
-      <div class="card">
+      <div class="card col-8 pl-1">
         <div class="card-header">
           <h3 class="card-title">Projects</h3>
 
           <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-              <i class="fas fa-minus"></i>
+                <span title="3 New Messages" class="badge badge-success">@Model.Projects.Count()</span>
             </button>
           </div>
         </div>
@@ -41,9 +43,6 @@
                       </th>
                       <th style="width: 20%">
                           Project Name
-                      </th>
-                      <th style="width: 30%">
-                          Team Members
                       </th>
                       <th>
                           Project Progress
@@ -73,22 +72,7 @@
                               @pm.Created_At
                           </small>
                       </td>
-                      <td>
-                          <ul class="list-inline">
-                              <li class="list-inline-item">
-                                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar.png">
-                              </li>
-                              <li class="list-inline-item">
-                                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar2.png">
-                              </li>
-                              <li class="list-inline-item">
-                                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar3.png">
-                              </li>
-                              <li class="list-inline-item">
-                                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar4.png">
-                              </li>
-                          </ul>
-                      </td>
+                     
                       <td class="project_progress">
                           <div class="progress progress-sm">
                               <div class="progress-bar bg-green" role="progressbar" aria-valuenow="57" aria-valuemin="0" aria-valuemax="100" style="width: 57%">
@@ -102,7 +86,7 @@
                           <span class="badge badge-success">Success</span>
                       </td>
                       <td class="project-actions text-right">
-                          <a class="btn btn-primary btn-sm" asp-controller = "Project" asp-action = "ProjectDetails" asp-route-Id = "@pm.Id">
+                          <a class="btn btn-primary btn-sm" asp-controller = "Project" asp-action = "ProjectDetail" asp-route-Id = "@pm.Id">
                               <i class="fas fa-folder">
                               </i>
                               View
@@ -112,7 +96,7 @@
                   </tr>
                   }}
                 else{
-                    <p>Not Project Found</p>
+                    <p>No Project Found</p>
                   }
                   
               </tbody>
@@ -120,7 +104,99 @@
         </div>
         <!-- /.card-body -->
       </div>
-      <!-- /.card -->
+
+
+
+            <div class="col-4">
+                <div class="card direct-chat direct-chat-warning">
+                  <div class="card-header">
+                    <h3 class="card-title">Invitations</h3>
+
+                    <div class="card-tools">
+                      <span title="3 New Messages" class="badge badge-danger">@Model.Invitations.Count()</span>
+                    </div>
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body">
+
+                    <div class="direct-chat-messages">
+              @foreach(var invitation in Model.Invitations){
+                  if(invitation.status == "Accepted"){
+                  <ul class="products-list product-list-in-card pl-2 pr-2">
+                  <li class="item">
+                    <div class="product-img">
+                      <img src="../../dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
+                    </div>
+                    <div class="product-info">
+                      <a href="javascript:void(0)" class="product-title">
+                        <span class="badge badge-success float-right">Accepted</span>
+                         </a>
+                         <span class="text-primary">Title</span>
+                         <span>@invitation.Title</span>
+                    <div>
+                        <span class="text-secondary">
+                        From:@invitation.Sender_Name
+                      </span>
+                    </div>
+                    </div>
+                  <span class="badge badge-warning ">@invitation.Created_At</span>
+                    <a asp-controller = "Task" asp-action = "TaskDetail" asp-route-Id="@invitation.Id"> <span class="badge badge-secondary float-right">Detail</span></a> 
+                  </li>
+                  </ul>
+                    }
+                    else if (invitation.status == "Declined"){     
+                  <ul class="products-list product-list-in-card pl-2 pr-2">
+                  <li class="item">
+                    <div class="product-img">
+                      <img src="../../dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
+                    </div>
+                    <div class="product-info">
+                      <a href="javascript:void(0)" class="product-title">
+                         <span class="badge badge-danger float-right">Declined</span></a>
+                         <span class="text-primary">Title</span>
+                         <span>@invitation.Title</span>
+                       <div>
+                        <span class="text-secondary">
+                        From:@invitation.Sender_Name
+                      </span>
+                    </div>
+                    </div>
+                  <span class="badge badge-warning ">@invitation.Created_At</span>
+                  <a asp-controller = "Task" asp-action = "TaskDetail" asp-route-Id = "@invitation.Id"> <span class="badge badge-secondary float-right">Detail</span></a> 
+                  </li>
+                  </ul>
+                    }
+                     else {
+                       <ul class="products-list product-list-in-card pl-2 pr-2">
+                        <li class="item">
+                          <div class="product-img">
+                            <img src="../../dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
+                          </div>
+                          <div class="product-info">
+                            <a href="javascript:void(0)" class="product-title">
+                              <span class="badge badge-primary float-right">Check Me</span></a>
+                              <span class="text-primary">Title</span>
+                              <span>@invitation.Title</span>
+                              <div>
+                                <span class="text-secondary">
+                                From:@invitation.Sender_Name
+                              </span>
+                            </div>
+                          </div>
+                         <span class="badge badge-warning ">@invitation.Created_At</span>
+                         <a asp-controller = "Task" asp-action = "TaskDetail" asp-route-Id = "@invitation.Id"> <span class="badge badge-secondary float-right">Detail</span></a>
+                        </li>
+                     </ul>
+                      }
+                    
+                   
+                    }
+                   
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
 
     </section>
     <!-- /.content -->

@@ -10,8 +10,8 @@ public class ProjectMember {
 
     [ForeignKey(nameof(Project))]
     public int ProjId {get;set;}
+    public DateTime Joined_At {get;set;}
     
-
     // Navigation Properties
     public ApplicationUser? ApplicationUser {get;set;}
     public Project? Project {get;set;}

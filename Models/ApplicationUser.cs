@@ -9,13 +9,12 @@ public class ApplicationUser : IdentityUser {
     [Required]
     public required string LastName { get; set;}
     public DateTime CreatedTime { get; set;}
+    public byte[]? ProfilePicture {get;set;}
 
 
     // Navigation Properties
     public virtual List<Project> Projects { get; set;} = new();
     public virtual List<Skill> Skills { get; set;} = new();
-    public virtual List<Task> Tasks {get;set;} = new();
-
     // Foreign Keys
 
 }

@@ -33,16 +33,24 @@ public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         }
 
         // Use await to handle the asynchronous operation
-        var result = await _userManager.ChangePasswordAsync(curruser, model.OldPassword, model.Password);
+        var result1 = await _userManager.ChangePasswordAsync(curruser, model.OldPassword, model.Password);
 
-        if (result.Succeeded) // Check for success
+        
+        curruser.ProfilePicture = model.ProfilePicture;
+        // updating user Profile
+        var result2 = await _userManager.UpdateAsync(curruser);
+
+
+        
+
+        if (result1.Succeeded && result2.Succeeded) // Check for success
         {
             return RedirectToAction("Login", "Login");
         }
         else
         {
             // Handle errors
-            foreach (var error in result.Errors)
+            foreach (var error in result1.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }

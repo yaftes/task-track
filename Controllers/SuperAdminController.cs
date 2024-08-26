@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-[Authorize(Roles = "Super")]
 public class SuperAdminController : Controller {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
@@ -35,7 +34,7 @@ public class SuperAdminController : Controller {
             var result = await _userManager.CreateAsync(user,model.Password);
             if (result.Succeeded){
 
-                var res = await _userManager.AddToRoleAsync(user,"Super");
+                var res = await _userManager.AddToRoleAsync(user,"Admin");
         
                 return RedirectToAction("Login","Login");
 

@@ -54,16 +54,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFxEYXNoQm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/yafet/dotnetprojects/ProjectManagementApp/Views/Project/ProjCreate.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFxQcm9qQ3JlYXRlLmNzaHRtbA==
+[C:/Users/yafet/dotnetprojects/ProjectManagementApp/Views/Project/ProjectCreate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFxQcm9qZWN0Q3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/yafet/dotnetprojects/ProjectManagementApp/Views/Project/ProjectDetails.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFxQcm9qZWN0RGV0YWlscy5jc2h0bWw=
+[C:/Users/yafet/dotnetprojects/ProjectManagementApp/Views/Project/ProjectDetail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFxQcm9qZWN0RGV0YWlsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/yafet/dotnetprojects/ProjectManagementApp/Views/Project/ProjEdit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFxQcm9qRWRpdC5jc2h0bWw=
+[C:/Users/yafet/dotnetprojects/ProjectManagementApp/Views/Project/ProjectEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFxQcm9qZWN0RWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/yafet/dotnetprojects/ProjectManagementApp/Views/Shared/Error.cshtml]
@@ -78,8 +78,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwZXJBZG1pblxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/yafet/dotnetprojects/ProjectManagementApp/Views/Task/TaskAssign.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFza1xUYXNrQXNzaWduLmNzaHRtbA==
+[C:/Users/yafet/dotnetprojects/ProjectManagementApp/Views/Task/TaskCreate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFza1xUYXNrQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/yafet/dotnetprojects/ProjectManagementApp/Views/Task/TaskDetail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFza1xUYXNrRGV0YWlsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/yafet/dotnetprojects/ProjectManagementApp/Views/User/ChangePassword.cshtml]

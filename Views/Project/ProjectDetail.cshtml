@@ -1,0 +1,277 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> _signInManager
+@inject UserManager<ApplicationUser> _userManager
+@using ProjectManagementApp.Models
+@model ProjectDetail
+
+<section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+              <h3 class="text-secondary"><i class="fas fa-project-diagram"></i>&nbsp;&nbsp;@Model.Project.Title</h3>
+          </div>
+        </div>
+      </div>
+</section>
+
+<section class="content">
+      <!-- Default box -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Projects Detail</h3>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+              <div class="row">
+                <div class="col-12 col-sm-4">
+                  <div class="info-box bg-light">
+                    <div class="info-box-content">
+                      <span class="info-box-text text-center text-muted">Start Date</span>
+                      <span class="info-box-number text-center text-muted mb-0">@Model.Project.Start_Date</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-4">
+                  <div class="info-box bg-light">
+                    <div class="info-box-content">
+                      <span class="info-box-text text-center text-muted">End Date</span>
+                      <span class="info-box-number text-center text-muted mb-0">@Model.Project.End_Date</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-4">
+                  <div class="info-box bg-light">
+                    <div class="info-box-content">
+                      <span class="info-box-text text-center text-muted">Estimated project duration</span>
+                      <span class="info-box-number text-center text-muted mb-0">20</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-12">
+
+            <div class="row">
+
+              <div class="col-md-10">
+                <!-- DIRECT CHAT -->
+                <div class="card direct-chat direct-chat-warning">
+                  <div class="card-header">
+                    <h3 class="card-title">Group Chat</h3>
+                    <div class="card-tools">
+                      <span title="3 New Messages" class="badge badge-warning">@Model.Messages.Count()</span>
+                    </div>
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body">
+
+                    <!-- Conversations are loaded here -->
+                    <div class="direct-chat-messages">
+                    @foreach(var msg in Model.Messages){
+                        if(msg.CreatorId == _userManager.GetUserId(User)){
+                           <!-- Message to the right -->
+                      <div class="direct-chat-msg right">
+                        <div class="direct-chat-infos clearfix">
+                          <span class="direct-chat-name float-right">@msg.FullName</span>
+                          <span class="direct-chat-timestamp float-left">@msg.Created_At</span>
+                        </div>
+                        <!-- /.direct-chat-infos -->
+                        <img class="direct-chat-img" src="../../dist/img/user1-128x128.jpg" alt="message user image">
+                        <!-- /.direct-chat-img -->
+                        <div class="direct-chat-text">
+                          @msg.Text
+                        </div>
+                        <!-- /.direct-chat-text -->
+                      </div>
+                      <!-- /.direct-chat-msg -->
+
+                        }
+                        else{
+                          
+                          <div class="direct-chat-msg">
+                        <div class="direct-chat-infos clearfix">
+                          <span class="direct-chat-name float-left">@msg.FullName</span>
+                          <span class="direct-chat-timestamp float-right">@msg.Created_At</span>
+                        </div>
+                        <!-- /.direct-chat-infos -->
+                        <img class="direct-chat-img" src="../../dist/img/user1-128x128.jpg" alt="message user image">
+                        <!-- /.direct-chat-img -->
+                        <div class="direct-chat-text">
+                           @msg.Text
+                        </div>
+                        <!-- /.direct-chat-text -->
+                      </div>
+                      <!-- /.direct-chat-msg -->    
+                        }
+                      }
+                      
+                    </div>
+                  </div>
+                  <!-- /.card-body -->
+                  <div class="card-footer">
+                    <form asp-controller="Project" asp-action ="ProjectDetail" method="post">
+                      <div class="input-group">
+                        <input type="text" name ="message" placeholder="Type Message ..." class="form-control">
+                        <span class="input-group-append">
+                          <button type="submit" class="btn btn-warning">Send</button>
+                        </span>
+                      </div>
+                    </form>
+                  </div>
+                  <!-- /.card-footer-->
+                </div>
+                <!--/.direct-chat -->
+              </div>
+              <!-- /.col -->
+
+
+              <div class="card col-10">
+              <div class="card-header">
+                <h3 class="card-title">Tasks</h3>
+
+                <div class="card-tools">
+                <span title="3 New Messages" class="badge badge-warning">@Model.Tasks.Count()</span>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body p-0 ">
+                
+                <ul class="products-list product-list-in-card pl-2 pr-2">
+                @foreach(var task in Model.Tasks){
+                  if(task.Assigned_to != null){
+                  <li class="item">
+                    <div class="product-img">
+                      <img src="../../dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
+                    </div>
+                    <div class="product-info">
+                      <a href="javascript:void(0)" class="product-title">@task.Title
+                         <span class="badge badge-success float-right">Assigned</span></a>
+                         <span>@task.Assigned_to</span>
+                      <span class="product-description">
+                        @task.Description
+                      </span>
+                      
+                    </div>
+                  </li>
+                  }
+                  else{
+                  <li class="item">
+                    <div class="product-img">
+                      <img src="../../dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
+                    </div>
+                    <div class="product-info">
+                      <a href="javascript:void(0)" class="product-title">@task.Title
+                         <span class="badge badge-danger float-right">Not Assigned</span></a>
+                      <span class="product-description">
+                        @task.Description
+                      </span>
+                      <span>
+                        @task.Id
+                      </span>
+                      <span>
+                        @Model.Project.Id
+                      </span>
+                    </div>
+                  <form asp-controller="Task" asp-action="SendInvitation" method="post">
+                    <span>Send Invitation To</span>
+                    <input type="hidden" name="TaskId" value="@task.Id">
+                    <input type="hidden" name="ProjectId" value="@Model.Project.Id">
+                    <input type="hidden" asp-for = "InvitationModel.ProjectId" value="@Model.Project.Id">
+                    <select name="selectedUser" id="">
+                      @foreach(var user in Model.AvailableUsers){
+                          <option value="@user.Id">@user.FirstName</option>
+                      }
+                    </select>
+                    <button type="submit">Send</button>
+                  </form>
+                  </li>
+                  }}
+                </ul>
+              </div>
+            </div> 
+
+              <div class="col-md-8">
+                <!-- USERS LIST -->
+                <div class="card">
+
+                  <div class="card-header">
+                    <h3 class="card-title">Latest Members</h3>
+
+                    <div class="card-tools">
+                      <span class="badge badge-primary">@Model.Projectmembers.Count()</span>
+                    </div>
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body p-0">
+                    <ul class="users-list clearfix">
+                      @foreach(var pm in Model.Projectmembers){
+                      <li>
+                        <img src="../../dist/img/user1-128x128.jpg" alt="User Image">
+                        <a class="users-list-name" href="#">@pm.FirstName</a>
+                        <span class="users-list-date">Today</span>
+                      </li>
+                      }
+                    </ul>
+                    <!-- /.users-list -->
+                  </div>
+                  <!-- /.card-body -->
+                  <div class="card-footer text-center">
+                    <a href="javascript:">View All Users</a>
+                  </div>
+                  <!-- /.card-footer -->
+                </div>
+                <!--/.card -->
+              </div>
+
+              <!-- /.col -->
+            </div>
+            <!-- /.row -->
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+            <h3 class="text-secondary"><i class="fas fa-info-circle"></i>&nbsp;Description</h3>
+              <p class="text-muted">@Model.Project.Description</p>
+              <br>
+              <div class="text-muted">
+                <p class="text-sm">Client Company
+                  <b class="d-block">Deveint Inc</b>
+                </p>
+                <p class="text-sm">Project Leader
+                  <b class="d-block">@Model.Project.Created_By</b>
+                </p>
+              </div>
+              <h5 class="mt-5 text-muted">Project files</h5>
+              <ul class="list-unstyled">
+                <li>
+                  <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Functional-requirements.docx</a>
+                </li>
+                <li>
+                  <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i> UAT.pdf</a>
+                </li>
+                <li>
+                  <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-envelope"></i> Email-from-flatbal.mln</a>
+                </li>
+                <li>
+                  <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-image "></i> Logo.png</a>
+                </li>
+                <li>
+                  <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Contract-10_12_2014.docx</a>
+                </li>
+              </ul>
+
+              <div class="text-center mt-5 mb-3">
+       
+                <a asp-controller="Project" asp-action = "ProjectEdit" asp-route-Id = "@Model.Project.Id"class="btn btn-sm btn-primary">Edit</a>
+                <a asp-controller="Task" asp-action ="TaskCreate" asp-route-Id = "@Model.Project.Id" class="btn btn-sm btn-warning">Task Create</a>
+                 <a asp-controller="Project" asp-action = "ProjectDelete" asp-route-Id = "@Model.Project.Id"class="btn btn-sm btn-danger">Delete</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+

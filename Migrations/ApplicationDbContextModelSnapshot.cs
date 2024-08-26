@@ -101,6 +101,9 @@ namespace ProjectManagementApp.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<byte[]>("ProfilePicture")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -124,34 +127,97 @@ namespace ProjectManagementApp.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("ApplicationUserProject", b =>
-                {
-                    b.Property<string>("ApplicationUsersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ApplicationUsersId", "ProjectId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("ApplicationUserProject");
-                });
-
             modelBuilder.Entity("ApplicationUserSkill", b =>
                 {
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("SkillId")
+                    b.Property<int>("SkillsId")
                         .HasColumnType("int");
 
-                    b.HasKey("ApplicationUserId", "SkillId");
+                    b.HasKey("ApplicationUserId", "SkillsId");
 
-                    b.HasIndex("SkillId");
+                    b.HasIndex("SkillsId");
 
                     b.ToTable("ApplicationUserSkill");
+                });
+
+            modelBuilder.Entity("Invitation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created_At")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Receiver_Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Recepant_Id")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sender_Id")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sender_Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TaskId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TaskId");
+
+                    b.ToTable("Invitation");
+                });
+
+            modelBuilder.Entity("Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created_At")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Message");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -272,8 +338,7 @@ namespace ProjectManagementApp.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Created_By")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -294,6 +359,8 @@ namespace ProjectManagementApp.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Created_By");
+
                     b.ToTable("Project");
                 });
 
@@ -304,6 +371,9 @@ namespace ProjectManagementApp.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Joined_At")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("ProjId")
                         .HasColumnType("int");
@@ -338,7 +408,7 @@ namespace ProjectManagementApp.Migrations
                     b.ToTable("Skill");
                 });
 
-            modelBuilder.Entity("Task", b =>
+            modelBuilder.Entity("SubTask", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -347,10 +417,13 @@ namespace ProjectManagementApp.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Assigned_to")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created_At")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Created_by")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -375,7 +448,50 @@ namespace ProjectManagementApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Assigned_to");
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("SubTask");
+                });
+
+            modelBuilder.Entity("Task", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Assigned_to")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created_At")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Created_by")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("End_Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Start_Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("Update_Date")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ProjectId");
 
@@ -405,21 +521,6 @@ namespace ProjectManagementApp.Migrations
                     b.ToTable("UserSkill");
                 });
 
-            modelBuilder.Entity("ApplicationUserProject", b =>
-                {
-                    b.HasOne("ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("ApplicationUsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Project", null)
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ApplicationUserSkill", b =>
                 {
                     b.HasOne("ApplicationUser", null)
@@ -430,9 +531,31 @@ namespace ProjectManagementApp.Migrations
 
                     b.HasOne("Skill", null)
                         .WithMany()
-                        .HasForeignKey("SkillId")
+                        .HasForeignKey("SkillsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Invitation", b =>
+                {
+                    b.HasOne("Task", "Task")
+                        .WithMany("Invitations")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Task");
+                });
+
+            modelBuilder.Entity("Message", b =>
+                {
+                    b.HasOne("Project", "Project")
+                        .WithMany("Messages")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -486,6 +609,15 @@ namespace ProjectManagementApp.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Project", b =>
+                {
+                    b.HasOne("ApplicationUser", "ApplicationUser")
+                        .WithMany("Projects")
+                        .HasForeignKey("Created_By");
+
+                    b.Navigation("ApplicationUser");
+                });
+
             modelBuilder.Entity("ProjectMember", b =>
                 {
                     b.HasOne("Project", "Project")
@@ -503,19 +635,24 @@ namespace ProjectManagementApp.Migrations
                     b.Navigation("Project");
                 });
 
+            modelBuilder.Entity("SubTask", b =>
+                {
+                    b.HasOne("Task", "Task")
+                        .WithMany("SubTasks")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Task");
+                });
+
             modelBuilder.Entity("Task", b =>
                 {
-                    b.HasOne("ApplicationUser", "ApplicationUser")
-                        .WithMany("Task")
-                        .HasForeignKey("Assigned_to");
-
                     b.HasOne("Project", "Project")
                         .WithMany("Tasks")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Project");
                 });
@@ -539,12 +676,21 @@ namespace ProjectManagementApp.Migrations
 
             modelBuilder.Entity("ApplicationUser", b =>
                 {
-                    b.Navigation("Task");
+                    b.Navigation("Projects");
                 });
 
             modelBuilder.Entity("Project", b =>
                 {
+                    b.Navigation("Messages");
+
                     b.Navigation("Tasks");
+                });
+
+            modelBuilder.Entity("Task", b =>
+                {
+                    b.Navigation("Invitations");
+
+                    b.Navigation("SubTasks");
                 });
 #pragma warning restore 612, 618
         }

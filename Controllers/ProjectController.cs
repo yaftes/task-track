@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-[Authorize(Roles = "ProjMan")]
+
 public class ProjectController : Controller {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
@@ -19,57 +19,54 @@ public class ProjectController : Controller {
    
      
      [HttpGet]
-     public IActionResult ProjCreate(){
-        ProjectModel model = new ProjectModel();
-        return View(model);
+     public IActionResult ProjectCreate(){
+        
+        return View();
      }
 
-     [HttpPost]
-
-     public async Task<IActionResult> ProjCreate(ProjectModel model){
-
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ProjectCreate(TaskModel model)
+    {
         var curruser = await _userManager.GetUserAsync(User);
-        if (curruser == null){
-            return View();
+         if (curruser == null)
+         {
+         return View();
         }
-         if (ModelState.IsValid){ 
-            bool check = _dbContext.Project.Any(p => p.Title == model.Title);
-            if(check){
-                ModelState.AddModelError(string.Empty, "Already Exits");
-                return View();
-            }
+        if(ModelState.IsValid){
 
-            Project project = new Project(){
-                Title = model.Title,
-                Description = model.Description,
-                Created_At = DateTime.UtcNow,
-                Start_Date = DateTime.UtcNow,
-                End_Date = DateTime.UtcNow,
-                Update_Date = DateTime.UtcNow,
-                Created_By = curruser.FirstName,
-            };
+             Project project = new Project
+             {
+                 Title = model.Title,
+                 Description = model.Description,
+                 Created_At = DateTime.Now,
+                 Start_Date = DateTime.Now, 
+                 End_Date = DateTime.Now,
+                 Update_Date = DateTime.Now,
+                 Created_By = curruser.Id, 
+             };
 
             _dbContext.Project.Add(project);
             _dbContext.SaveChanges();
 
-            ProjectMember projectMember = new ProjectMember(){
-                UserId = curruser.Id,
-                ProjId = project.Id,
-            };
-            _dbContext.ProjectMember.Add(projectMember);
-            _dbContext.SaveChanges();
+            ProjectMember pm = new  ProjectMember(){
+                    UserId = curruser.Id,
+                    ProjId = project.Id,
+                    Joined_At = DateTime.Now  };
+             _dbContext.ProjectMember.Add(pm);
+             _dbContext.SaveChanges();
+          
 
-            return RedirectToAction("AllProjects","Project");
-         }
-         
-        return View();
-     }
+        return RedirectToAction("AllProjects", "Project");}
+        return View(model);
+    }
 
       [HttpGet]
-     public async Task<IActionResult> ProjEdit(int id){
+ 
+     public async Task<IActionResult> ProjectEdit(int id){
         var project = _dbContext.Project.FirstOrDefault(p=>p.Id == id);
         ProjectModel model = new ProjectModel(){
-            Id = project.Id,
+            ProjectId = project.Id,
             Title = project.Title,
             Description = project.Description,
             Start_Date = project.Start_Date.ToString("MM/dd/yyyy HH:mm"),
@@ -78,26 +75,35 @@ public class ProjectController : Controller {
         };
          return View(model);
      }
+
      [HttpPost]
-      public async Task<IActionResult> ProjEdit(ProjectModel model){
-        var currpro = _dbContext.Project.FirstOrDefault(p => p.Id == model.Id);
+
+      public async Task<IActionResult> ProjectEdit(ProjectModel model){
+        var currpro = _dbContext.Project.FirstOrDefault(p => p.Id == model.ProjectId);
         currpro.Title = model.Title;    
         currpro.Description = model.Description;
         currpro.Start_Date = DateTime.Parse(model.Start_Date);
         currpro.End_Date = DateTime.Parse(model.End_Date);
-
         _dbContext.Project.Update(currpro);
         await _dbContext.SaveChangesAsync();
          return RedirectToAction("ProjectDetails","Project",new{
-            Id = model.Id,
+            Id = model.ProjectId,
          });
      }
+     public async Task<IActionResult> ProjectDelete(int id){
 
-     public async Task<IActionResult> ProjDelete(){
+        var project = _dbContext.Project.FirstOrDefault(p => p.Id == id);
+        if(project != null){
+            _dbContext.Project.Remove(project);
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction("AllProjects","Project");
+        }
+       
          return View();
      }
      
      [HttpGet]
+  
      public async Task<IActionResult> AllProjects(){
       var curruser = await _userManager.GetUserAsync(User); 
       var projectIds = await _dbContext.ProjectMember
@@ -107,20 +113,18 @@ public class ProjectController : Controller {
         var _projects = await _dbContext.Project
         .Where(p => projectIds.Contains(p.Id))
         .ToListAsync();
-        
+        var inv = _dbContext.Invitation.Where(i => i.Recepant_Id == curruser.Id).ToList();
         ProjectDetail projectDetails = new ProjectDetail(){
-            // Projects = _projects,  
-            Projects = _projects
-            
+            Projects = _projects,
+            Invitations = inv
         };
-
-    
         return View(projectDetails);
      } 
 
      [HttpGet]
-     // used for displaying project Details
-     public async Task<IActionResult> ProjectDetails(int? id){
+     public async Task<IActionResult> ProjectDetail(int? id){
+        var curruser = await _userManager.GetUserAsync(User); 
+        var tasks =  _dbContext.Task.Where(t => t.ProjectId == id).ToList();
         var _project = _dbContext.Project.FirstOrDefault(p=>p.Id == id);
         var usersInProject = await _dbContext.ProjectMember
         .Where(pm => pm.ProjId == id)
@@ -130,17 +134,50 @@ public class ProjectController : Controller {
         var users = await _dbContext.Users
         .Where(u => usersInProject.Contains(u.Id))
         .ToListAsync();
-        ProjectDetail projectDetails = new ProjectDetail(){
-            project = _project,
-            Team_members = users,
-        };
+
+        var _AvailableUsers = _userManager.Users.ToList();
+    
+
+
+        var message = _dbContext.Message.Where(m => m.ProjectId == id).ToList();
+    
+            ProjectDetail projectDetails = new ProjectDetail(){
+            Project = _project,
+            Projectmembers = users,
+            Tasks = tasks,
+            Messages = message,
+            AvailableUsers = _AvailableUsers,
+           
             
+        };
         return View(projectDetails);
+      
      } 
+
+     [HttpPost]
+     [ValidateAntiForgeryToken]
+     public async  Task<IActionResult> ProjectDetail(int id,string message){
+        var curruser = await _userManager.GetUserAsync(User);
+        Message msg = new Message(){
+            Text = message,
+            ProjectId = id,
+            CreatorId = curruser.Id,
+            FullName = curruser.FirstName + " " + curruser.LastName,
+            Created_At = DateTime.Now,
+        };
+
+        _dbContext.Message.Add(msg);
+        _dbContext.SaveChanges();
+        return RedirectToAction("ProjectDetail","Project",new {
+            Id = id
+        });
+     }
 
      public IActionResult DashBoard(){
         return View();
      }
+
+
 
         
 }
