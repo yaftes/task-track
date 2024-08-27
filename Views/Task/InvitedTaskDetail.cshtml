@@ -1,5 +1,6 @@
 @using ProjectManagementApp.Models
 @model TaskDetail
+
 <section class="content-header">
     <div class="container-fluid">
     <div class="row mb-2">
@@ -15,7 +16,7 @@
     <!-- Default box -->
     <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Task Detail</h3>
+        <h3 class="card-title">Projects Detail</h3>
     </div>
     <div class="card-body">
         <div class="row">
@@ -24,7 +25,7 @@
             <div class="col-12 col-sm-5">
                 <div class="info-box bg-light">
                 <div class="info-box-content">
-                    <span class="info-box-text text-center text-muted">Start Date</span>
+                    <span class="info-box-text text-center text-muted"> Start Date</span>
                     <span class="info-box-number text-center text-muted mb-0">@Model.Task.Start_Date</span>
                 </div>
                 </div>
@@ -48,8 +49,8 @@
             </div>
             <div class="row">
             <div class="col-12">
-                <h4>@Model.Task.Description</h4>
-                <p></p>
+                <h4>Description</h4>
+                <p>@Model.Task.Description</p>
                 <p class="text-muted">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terr.</p>
             </div>
             </div>
@@ -60,7 +61,7 @@
                 <b class="d-block">Deveint Inc</b>
             </p>
             <p class="text-sm">Project Leader
-                <b class="d-block"></b>
+                <b class="d-block">@Model.Invitation.Sender_Name</b>
             </p>
             </div>
 
@@ -82,9 +83,21 @@
                 <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Contract-10_12_2014.docx</a>
             </li>
             </ul>
-      
-        <a asp-controller = "Project" asp-action = "ProjectDetail" asp-route-Id = "@Model.Task.ProjectId" class="badge badge-danger">Back</a>
-         <a asp-controller = "SubTask" asp-action = "Create"  class="badge badge-primary">Add New Sub Task</a>
+        @if(Model.Invitation.status == null){
+            <div class="text-center mt-5 mb-3">
+            <form asp-controller = "Task" asp-action = "AcceptInvitation" method="post">
+            <input type="hidden" value="@Model.Invitation.TaskId" name="TaskId">
+            <input type="hidden" name="ProjectId" value="@Model.Invitation.ProjectId">
+            <input type="hidden" name="InvitationId" value="@Model.Invitation.Id">
+            <b><span class="text-success">Accept</span></b>
+            <input type="radio" name="Status" value="Accepted" id="">
+            <b><span class="text-danger">Decline</span></b>
+            <input type="radio" name="Status" id="" value="Declined">
+            <button  class="btn btn-sm btn-primary" type="submit">Done</button>
+            </form>
+            </div>
+        }
+        <a asp-controller = "Project" asp-action = "AllProjects" class="badge badge-danger">Back</a>
        
         </div>
         </div>

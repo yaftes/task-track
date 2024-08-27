@@ -17,13 +17,13 @@ public class Task {
     // Navigation Properties
     public Project? Project { get; set;} 
     public List<SubTask>? SubTasks {get;set;}
-
     public List<Invitation> Invitations {get;set;}
-
+    //
 
     // Foreign Keys
     [ForeignKey("Project")]
     public int ProjectId {get;set;}
+    // 
     //
     public string? Assigned_to {get;set;}
     public string? Created_by {get;set;}

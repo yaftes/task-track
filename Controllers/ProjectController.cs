@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-
 public class ProjectController : Controller {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
@@ -15,9 +14,7 @@ public class ProjectController : Controller {
             this._userManager = _userManager;
             this._roleManager = _roleManager;
             this._dbContext = _dbContext;
-        }
-   
-     
+        }     
      [HttpGet]
      public IActionResult ProjectCreate(){
         
@@ -103,7 +100,6 @@ public class ProjectController : Controller {
      }
      
      [HttpGet]
-  
      public async Task<IActionResult> AllProjects(){
       var curruser = await _userManager.GetUserAsync(User); 
       var projectIds = await _dbContext.ProjectMember
@@ -116,7 +112,7 @@ public class ProjectController : Controller {
         var inv = _dbContext.Invitation.Where(i => i.Recepant_Id == curruser.Id).ToList();
         ProjectDetail projectDetails = new ProjectDetail(){
             Projects = _projects,
-            Invitations = inv
+            Invitations = inv,
         };
         return View(projectDetails);
      } 
@@ -134,21 +130,14 @@ public class ProjectController : Controller {
         var users = await _dbContext.Users
         .Where(u => usersInProject.Contains(u.Id))
         .ToListAsync();
-
         var _AvailableUsers = _userManager.Users.ToList();
-    
-
-
         var message = _dbContext.Message.Where(m => m.ProjectId == id).ToList();
-    
             ProjectDetail projectDetails = new ProjectDetail(){
             Project = _project,
             Projectmembers = users,
             Tasks = tasks,
             Messages = message,
-            AvailableUsers = _AvailableUsers,
-           
-            
+            AvailableUsers = _AvailableUsers, 
         };
         return View(projectDetails);
       
@@ -172,13 +161,9 @@ public class ProjectController : Controller {
             Id = id
         });
      }
-
      public IActionResult DashBoard(){
         return View();
      }
-
-
-
-        
+      
 }
 

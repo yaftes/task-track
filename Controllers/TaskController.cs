@@ -42,8 +42,16 @@ public class TaskController : Controller {
         });
     }
 
-    [HttpGet]
     public IActionResult TaskDetail(int Id){
+        var task = _dbContext.Task.FirstOrDefault(t => t.Id == Id);
+        TaskDetail taskDetail = new TaskDetail(){
+            Task = task
+        };
+        return View(taskDetail);
+    }
+
+    [HttpGet]
+    public IActionResult InvitedTaskDetail(int Id){
         Invitation invitation = _dbContext.Invitation.FirstOrDefault(i => i.Id == Id);
         Task task = _dbContext.Task.SingleOrDefault(t => t.Id == invitation.TaskId);
 
@@ -54,7 +62,7 @@ public class TaskController : Controller {
         return View(taskDetail);
      }
         [HttpPost]
-        public async Task<IActionResult> SendInvitation(string selectedUser,string TaskId,string ProjectId){
+    public async Task<IActionResult> SendInvitation(string selectedUser,string TaskId,string ProjectId){
         int taskid = Convert.ToInt16(TaskId);
         var task = _dbContext.Task.FirstOrDefault(t => t.Id == taskid);
         var RecepantUser = await _userManager.FindByIdAsync(selectedUser);
@@ -71,7 +79,6 @@ public class TaskController : Controller {
             Sender_Name = SenderUser.FirstName + " " + SenderUser.LastName, 
             Title = task.Title,
             Description = task.Description,
-
        }; 
        _dbContext.Invitation.Add(invitation);
        _dbContext.SaveChanges();
@@ -106,6 +113,7 @@ public class TaskController : Controller {
         }
     return RedirectToAction("AllProjects","Project");   
     }
+
 
    
 
