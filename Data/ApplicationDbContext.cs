@@ -10,6 +10,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser,Applicatio
         public DbSet<Message> Message {get;set;}  
         public DbSet<SubTask> SubTask {get;set;} 
         public DbSet<Invitation> Invitation {get;set;}
+        public DbSet<TaskWeight> TaskWeight  {get;set;}
+        public DbSet<SubTaskWeight> SubTaskWeight {get;set;}
 
 
 }

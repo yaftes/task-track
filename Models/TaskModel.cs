@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 public class TaskModel {
-
     [Required]
     [StringLength(100)]
     public string Title { get; set; } = "";

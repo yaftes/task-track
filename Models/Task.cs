@@ -16,8 +16,10 @@ public class Task {
     
     // Navigation Properties
     public Project? Project { get; set;} 
+    public TaskWeight? TaskWeight {get;set;}
     public List<SubTask>? SubTasks {get;set;}
-    public List<Invitation> Invitations {get;set;}
+    public List<Invitation>? Invitations {get;set;}
+
     //
 
     // Foreign Keys

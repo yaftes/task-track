@@ -1,21 +1,21 @@
 @using ProjectManagementApp.Models
-@model TaskDetail
-
+@model SubTaskDetail
 <section class="content-header">
     <div class="container-fluid">
     <div class="row mb-2">
         <div class="col-sm-6">
-        <h1>Task Detail Info</h1>
+        <h1>Sub-Task Detail Info</h1>
     </div>
     </div><!-- /.container-fluid -->
 </section>
+
 <!-- Main content -->
 <section class="content">
 
     <!-- Default box -->
     <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Task Detail</h3>
+        <h3 class="card-title">Sub-Task Detail</h3>
     </div>
     <div class="card-body">
         <div class="row">
@@ -25,7 +25,7 @@
                 <div class="info-box bg-light">
                 <div class="info-box-content">
                     <span class="info-box-text text-center text-muted">Start Date</span>
-                    <span class="info-box-number text-center text-muted mb-0">@Model.Task.Start_Date</span>
+                    <span class="info-box-number text-center text-muted mb-0">@Model.SubTask.Start_Date</span>
                 </div>
                 </div>
             </div>
@@ -33,7 +33,7 @@
                 <div class="info-box bg-light">
                 <div class="info-box-content">
                     <span class="info-box-text text-center text-muted">End Date</span>
-                    <span class="info-box-number text-center text-muted mb-0">@Model.Task.End_Date</span>
+                    <span class="info-box-number text-center text-muted mb-0">@Model.SubTask.End_Date</span>
                 </div>
                 </div>
             </div>
@@ -47,62 +47,9 @@
             </div>
             </div>
             
-
-              <div class="card col-10">
-              <div class="card-header">
-                <h3 class="card-title">Sub Tasks</h3>
-
-                <div class="card-tools">
-                <span title="3 New Messages" class="badge badge-warning">@Model.SubTasks.Count()</span>
-                </div>
-              </div>
-
-              <!-- /.card-header -->
-              <div class="card-body p-0 ">
-                <ul class="products-list product-list-in-card pl-2 pr-2">
-                @if(Model.SubTasks == null || Model.SubTasks.Count() == 0){
-                    <p>No SubTask Please Add</p>
-                }
-                else{
-                 foreach(var st in Model.SubTasks){
-                  <li class="item">
-                    <div class="product-img">
-                      <img src="../../dist/img/default-150x150.png" alt="Product Image" class="img-size-50">
-                    </div>
-                    <div class="product-info">
-                      <span>Title</span>
-                      <a href="javascript:void(0)" class="product-title"> @st.Title
-                         <span class="badge badge-success float-right">Assigned</span></a>
-                         <span class="float-right"></span>
-                      <span class="product-description">
-                        @st.Description
-                      </span> 
-                      <a asp-controller="SubTask" asp-action="Detail" asp-route-Id = "@st.Id"><span class="badge badge-secondary float-right">Detail</span></a>
-                    <div>
-                    @if(Model.SubTaskWeights != null || Model.SubTaskWeights.Count() != 0){
-                        foreach(var stw in Model.SubTaskWeights){
-                        if(stw.SubTaskId == st.Id){
-                            <p>The SubTask Impact on Task in % </p>
-                            <span class="text-primary">@stw.Weight%</span>
-                        }
-
-                        }
-                        }
-                    else{
-                        <p>No Progress</p>
-                        }
-                    </div>
-                    </div>
-                  </li>
-                  }
-                  }
-                </ul>
-              </div>
-            </div> 
-
             <div class="row">
             <div class="col-12">
-                <h4>@Model.Task.Description</h4>
+                <h4>@Model.SubTask.Description</h4>
                 <p></p>
                 <p class="text-muted">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terr.</p>
             </div>
@@ -136,10 +83,7 @@
                 <a href="" class="btn-link text-secondary"><i class="far fa-fw fa-file-word"></i> Contract-10_12_2014.docx</a>
             </li>
             </ul>
-      
-        <a asp-controller = "Project" asp-action = "ProjectDetail" asp-route-Id = "@Model.Task.ProjectId" class="badge badge-danger">Back</a>
-        <a asp-controller = "SubTask" asp-action = "Create" asp-route-Id = "@Model.Task.Id"  class="badge badge-primary">Add New Sub Task</a>
-       
+        <a asp-controller = "Task" asp-action = "TaskDetail" asp-route-Id = "@Model.SubTask.TaskId" class="badge badge-danger">Back</a>
         </div>
         </div>
     </div>

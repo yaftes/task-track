@@ -44,8 +44,20 @@ public class TaskController : Controller {
 
     public IActionResult TaskDetail(int Id){
         var task = _dbContext.Task.FirstOrDefault(t => t.Id == Id);
+        var subtasks = _dbContext.SubTask.Where(st => st.TaskId == Id).ToList();
+        var subtaskweight = new List<SubTaskWeight>();
+        foreach(var st in subtasks){
+            var stw = _dbContext.SubTaskWeight.FirstOrDefault(stw => stw.SubTaskId == st.Id);
+            if(stw != null){
+                stw.Weight = Math.Round(stw.Weight,2);
+                subtaskweight.Add(stw);
+            }
+        }
+        
         TaskDetail taskDetail = new TaskDetail(){
-            Task = task
+            Task = task,
+            SubTasks = subtasks,
+            SubTaskWeights = subtaskweight
         };
         return View(taskDetail);
     }
@@ -113,8 +125,5 @@ public class TaskController : Controller {
         }
     return RedirectToAction("AllProjects","Project");   
     }
-
-
-   
 
 }

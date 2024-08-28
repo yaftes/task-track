@@ -139,6 +139,7 @@ public class ProjectController : Controller {
             Messages = message,
             AvailableUsers = _AvailableUsers, 
         };
+
         return View(projectDetails);
       
      } 
@@ -167,3 +168,12 @@ public class ProjectController : Controller {
       
 }
 
+
+
+// if the current logged in user is pm which has a role to create a project
+// if(curruser == project.createdBy)
+// view all tasks 
+// else view all related tasks curruser == task-assigned_To
+// taskDetail
+// the is an option in which we can add the subTasks 
+// and 

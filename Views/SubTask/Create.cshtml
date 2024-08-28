@@ -1,0 +1,86 @@
+@using ProjectManagementApp.Models
+@model SubTaskModel
+
+<section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Create Your Sub Task Here</h1>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+</section>
+
+    <!-- Main content -->
+    <section class="content">
+      <form asp-controller="SubTask" asp-action = "Create" method="post">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card card-secondary">
+
+            <div class="card-header">
+              <h3 class="card-title">Sub Task Detail</h3>
+            </div>
+
+            
+            <div class="card-body">
+
+            
+              <div class="form-group">
+                <label for="inputName">Sub Task Title</label>
+                <input asp-for="Title" type="text" id="inputName" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label for="inputDescription">Sub Task Description</label>
+                <textarea asp-for = "Description" id="inputDescription" class="form-control" rows="4"></textarea>
+              </div>
+
+               <div class="form-group">
+                  <label>Start Date</label>
+                    <div class="input-group date" id="reservationdatetime" data-target-input="nearest">
+                        <input asp-for = "Start_Date" type="text" class="form-control datetimepicker-input" data-target="#reservationdatetime"/>
+                        <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                  <!-- Date and time -->
+                <div class="form-group">
+                  <label>End Date</label>
+                    <div class="input-group date" id="reservationdatetime1" data-target-input="nearest">
+                        <input asp-for = "End_Date" type="text" class="form-control datetimepicker-input" data-target="#reservationdatetime1"/>
+                        <div class="input-group-append" data-target="#reservationdatetime1" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+              <div class="form-group">
+                <label for="inputName">Give A point</label>
+                <input asp-for="Point" type="number" id="inputName" class="form-control" placeholder="choose number between 1 - 1000">
+              </div>
+
+              
+
+          <div class="form-group">
+        <div class="col-12">
+          <a href="# class="btn btn-secondary">Cancel</a>
+          <input type="submit" value="Create new Project" class="btn btn-success float-right">
+        </div>
+      </div>
+
+            </div>
+
+           
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+      
+
+      </div>
+      
+       </form>
+</section>
