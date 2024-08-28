@@ -17,6 +17,7 @@ public class SubTask {
     // Navigation Properties
     public Task? Task { get; set;} 
     public SubTaskWeight? SubTaskWeight {get;set;}
+    public SubTaskStatus? SubTaskStatus {get;set;}
     //
     // Foreign Keys
     [ForeignKey("Task")]
