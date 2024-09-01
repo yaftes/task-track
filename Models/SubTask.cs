@@ -18,6 +18,7 @@ public class SubTask {
     public Task? Task { get; set;} 
     public SubTaskWeight? SubTaskWeight {get;set;}
     public SubTaskStatus? SubTaskStatus {get;set;}
+    public List<SubTaskFile>? SubTaskFiles {get; set;}
     //
     // Foreign Keys
     [ForeignKey("Task")]

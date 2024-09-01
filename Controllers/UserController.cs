@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Web;
+using System.IO;
 
 public  class UserController : Controller {
     private readonly UserManager<ApplicationUser> _userManager;
@@ -20,36 +22,43 @@ public  class UserController : Controller {
     }
 
     [HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
-{
-    if (ModelState.IsValid)
+    public async Task<IActionResult> ChangePassword(IFormFile Image)
     {
-        var curruser = await _userManager.GetUserAsync(User);
-        if (curruser == null)
+        if (ModelState.IsValid)
         {
-            return View();
-        }
-
-        var result1 = await _userManager.ChangePasswordAsync(curruser, model.OldPassword, model.Password);
-        curruser.ProfilePicture = model.ProfilePicture;
-        // updating user Profile
-        var result2 = await _userManager.UpdateAsync(curruser);
-
-        if (result1.Succeeded && result2.Succeeded) 
-        {
-            return RedirectToAction("Login", "Login");
-        }
-        else
-        {
-            foreach (var error in result1.Errors)
+            var curruser = await _userManager.GetUserAsync(User);
+            if (curruser == null)
             {
-                ModelState.AddModelError(string.Empty, error.Description);
+                return NotFound(); 
             }
-            return View(model);
+
+            if (Image != null && Image.Length > 0) {
+                
+                // change the file to binary format
+                using (var datastream = new MemoryStream())
+                {
+                    await Image.CopyToAsync(datastream);
+                    curruser.ProfilePicture = datastream.ToArray();
+                }
+                await _userManager.UpdateAsync(curruser);
+                return RedirectToAction("Login", "Login"); 
+            }
+
+           return View();
         }
+        
+        return View(); 
     }
-    return View(model);
-}
-    
+
+    [HttpGet]
+    public async Task<IActionResult> GetProfilePicture(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user?.ProfilePicture != null)
+        {
+            return File(user.ProfilePicture, "image/png"); 
+        }
+        
+        return NotFound();
+    }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ProjectManagementApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240828205047_TaskStatusandOtherstatus")]
+    partial class TaskStatusandOtherstatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -347,9 +350,6 @@ namespace ProjectManagementApp.Migrations
                     b.Property<DateTime>("End_Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("Progress")
-                        .HasColumnType("float");
-
                     b.Property<DateTime>("Start_Date")
                         .HasColumnType("datetime2");
 
@@ -365,33 +365,6 @@ namespace ProjectManagementApp.Migrations
                     b.HasIndex("Created_By");
 
                     b.ToTable("Project");
-                });
-
-            modelBuilder.Entity("ProjectFile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ContentType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("Data")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("FileName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("ProjectFile");
                 });
 
             modelBuilder.Entity("ProjectMember", b =>
@@ -502,33 +475,6 @@ namespace ProjectManagementApp.Migrations
                     b.ToTable("SubTask");
                 });
 
-            modelBuilder.Entity("SubTaskFile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ContentType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("Data")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("FileName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SubTaskId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SubTaskId");
-
-                    b.ToTable("SubTaskFile");
-                });
-
             modelBuilder.Entity("SubTaskStatus", b =>
                 {
                     b.Property<int>("Id")
@@ -600,12 +546,6 @@ namespace ProjectManagementApp.Migrations
                     b.Property<DateTime>("End_Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Progress")
-                        .HasColumnType("float");
-
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
@@ -625,33 +565,6 @@ namespace ProjectManagementApp.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("Task");
-                });
-
-            modelBuilder.Entity("TaskFile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ContentType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("Data")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("FileName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TaskId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TaskId");
-
-                    b.ToTable("TaskFile");
                 });
 
             modelBuilder.Entity("TaskStatus", b =>
@@ -821,17 +734,6 @@ namespace ProjectManagementApp.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
-            modelBuilder.Entity("ProjectFile", b =>
-                {
-                    b.HasOne("Project", "Project")
-                        .WithMany("ProjectFiles")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-                });
-
             modelBuilder.Entity("ProjectMember", b =>
                 {
                     b.HasOne("Project", "Project")
@@ -871,17 +773,6 @@ namespace ProjectManagementApp.Migrations
                     b.Navigation("Task");
                 });
 
-            modelBuilder.Entity("SubTaskFile", b =>
-                {
-                    b.HasOne("SubTask", "SubTask")
-                        .WithMany("SubTaskFiles")
-                        .HasForeignKey("SubTaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SubTask");
-                });
-
             modelBuilder.Entity("SubTaskStatus", b =>
                 {
                     b.HasOne("SubTask", "SubTask")
@@ -913,17 +804,6 @@ namespace ProjectManagementApp.Migrations
                         .IsRequired();
 
                     b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("TaskFile", b =>
-                {
-                    b.HasOne("Task", "Task")
-                        .WithMany("TaskFiles")
-                        .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Task");
                 });
 
             modelBuilder.Entity("TaskStatus", b =>
@@ -974,8 +854,6 @@ namespace ProjectManagementApp.Migrations
                 {
                     b.Navigation("Messages");
 
-                    b.Navigation("ProjectFiles");
-
                     b.Navigation("ProjectStatus");
 
                     b.Navigation("Tasks");
@@ -983,8 +861,6 @@ namespace ProjectManagementApp.Migrations
 
             modelBuilder.Entity("SubTask", b =>
                 {
-                    b.Navigation("SubTaskFiles");
-
                     b.Navigation("SubTaskStatus");
 
                     b.Navigation("SubTaskWeight");
@@ -995,8 +871,6 @@ namespace ProjectManagementApp.Migrations
                     b.Navigation("Invitations");
 
                     b.Navigation("SubTasks");
-
-                    b.Navigation("TaskFiles");
 
                     b.Navigation("TaskStatus");
 

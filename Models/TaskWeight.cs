@@ -7,7 +7,7 @@ public class TaskWeight {
     public double Point {get;set;} = 0.0;
     public double Weight {get; set;} = 0.0;
     // Navigation Properties
-    public Task? Task {get;set;}
+    public virtual Task? Task {get;set;}
     // Foreign Keys
     [ForeignKey("Task")]
     public int TaskId { get; set; } 

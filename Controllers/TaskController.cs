@@ -20,10 +20,10 @@ public class TaskController : Controller {
         };
         return View(taskmodel);
     }
-    [HttpPost]
-    public async Task<IActionResult> TaskCreate(TaskModel model,int id){
-        var curruser = await _userManager.GetUserAsync(User);
 
+    [HttpPost]
+    public async Task<IActionResult> TaskCreate(TaskModel model,int id,List<IFormFile> taskfiles){
+        var curruser = await _userManager.GetUserAsync(User);
         if (ModelState.IsValid){
             Task task = new Task(){
                 Title = model.Title,
@@ -36,6 +36,59 @@ public class TaskController : Controller {
             };
             _dbContext.Task.Add(task);
             _dbContext.SaveChanges();
+
+              if(taskfiles != null){
+                foreach(var file in taskfiles){
+                    TaskFile taskfile = new TaskFile(){
+                        TaskId = task.Id,
+                        FileName = file.FileName,
+                        ContentType = file.ContentType,
+                    };
+                    using(var memorystream = new MemoryStream()){
+                          await file.CopyToAsync(memorystream);
+                          taskfile.Data = memorystream.ToArray();
+                    }
+                    _dbContext.TaskFile.Add(taskfile);
+                    _dbContext.SaveChanges();
+                }
+            
+            TaskWeight taskWeight = new TaskWeight(){
+                TaskId = task.Id,
+                Point = model.Point,
+            };
+            _dbContext.TaskWeight.Add(taskWeight);
+            _dbContext.SaveChanges();   
+
+            TaskStatus taskStatus = new TaskStatus(){
+                TaskId = task.Id,
+            };
+            _dbContext.TaskStatus.Add(taskStatus);
+            _dbContext.SaveChanges();
+
+            var tasks = _dbContext.Task.Where(t => t.ProjectId == id).ToList();
+            double totalpoint = 0.0;
+            foreach (var ts in tasks){
+                var tw = _dbContext.TaskWeight.FirstOrDefault(tw => tw.TaskId == ts.Id);
+                totalpoint += tw.Point;
+            };
+            foreach(var ts in tasks){
+                 var tw = _dbContext.TaskWeight.FirstOrDefault(tw => tw.TaskId == ts.Id);
+                 tw.Weight = tw.Point / totalpoint * 100;
+                 _dbContext.TaskWeight.Update(tw);
+            }
+            _dbContext.SaveChanges();
+            var project = _dbContext.Project.FirstOrDefault(p => p.Id == task.ProjectId);
+            double totalprogress = 0.0;
+            foreach(var ts in tasks){
+                var tw = _dbContext.TaskWeight.FirstOrDefault(tw => tw.TaskId == ts.Id);    
+                totalprogress += ts.Progress * tw.Weight / 100;
+            }
+            project.Progress = totalprogress;
+            _dbContext.Project.Update(project);
+            _dbContext.SaveChanges();   
+            
+          
+            }
         }
         return  RedirectToAction("ProjectDetail","Project", new {
             Id = id,
@@ -53,13 +106,31 @@ public class TaskController : Controller {
                 subtaskweight.Add(stw);
             }
         }
-        
+        var taskfiles = _dbContext.TaskFile.Where(tf => tf.TaskId == task.Id).ToList();
+        task.Progress = Math.Round(task.Progress,2);
         TaskDetail taskDetail = new TaskDetail(){
             Task = task,
             SubTasks = subtasks,
-            SubTaskWeights = subtaskweight
+            SubTaskWeights = subtaskweight,
+            TaskFiles = taskfiles,
         };
         return View(taskDetail);
+    }
+
+    public IActionResult StatusUpdate(int Id){
+        var task = _dbContext.Task.FirstOrDefault(t => t.Id == Id);
+        var taskWeight = _dbContext.TaskWeight.FirstOrDefault(tw => tw.TaskId == task.Id);
+        var taskstatus = _dbContext.TaskStatus.FirstOrDefault(ts => ts.TaskId == task.Id);
+        // to say one task is completed the task progress should be 100 %
+        if(task.Progress >= 100) {
+         taskstatus.Status = "Completed";
+        _dbContext.TaskStatus.Update(taskstatus);
+        _dbContext.SaveChanges();
+        }
+        var project = _dbContext.Project.FirstOrDefault(p => p.Id == task.ProjectId);
+        return RedirectToAction("ProjectDetail","Project",new {
+            Id = project.Id
+        }) ;
     }
 
     [HttpGet]
@@ -73,9 +144,17 @@ public class TaskController : Controller {
             };
         return View(taskDetail);
      }
-        [HttpPost]
+
+    [HttpPost]
     public async Task<IActionResult> SendInvitation(string selectedUser,string TaskId,string ProjectId){
-        int taskid = Convert.ToInt16(TaskId);
+        var check = IsInvitationUnique(selectedUser,TaskId,ProjectId);
+        if(check is true){
+        return RedirectToAction("ProjectDetail","Project",new {
+        Id = Convert.ToInt16(ProjectId)
+            });
+        }
+        var taskid = Convert.ToInt16(TaskId);
+        var projectid = Convert.ToInt16(ProjectId);
         var task = _dbContext.Task.FirstOrDefault(t => t.Id == taskid);
         var RecepantUser = await _userManager.FindByIdAsync(selectedUser);
         var SenderUser = await _userManager.GetUserAsync(User);
@@ -83,7 +162,7 @@ public class TaskController : Controller {
             return View();
         }
         Invitation invitation = new Invitation(){
-            ProjectId = Convert.ToInt16(ProjectId),
+            ProjectId = projectid,
             TaskId = taskid,
             Sender_Id = SenderUser.Id,
             Recepant_Id = selectedUser,
@@ -102,7 +181,7 @@ public class TaskController : Controller {
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AcceptInvitation(string TaskId,string ProjectId,string InvitationId,string Status ){
-        var curruser = _userManager.GetUserId(User);
+        var curruser = await _userManager.GetUserAsync(User);
         int invId = Convert.ToInt16(InvitationId);
         var inv = _dbContext.Invitation.FirstOrDefault(i => i.Id == invId);
         inv.status = Status;
@@ -111,19 +190,31 @@ public class TaskController : Controller {
         if(inv.status == "Accepted"){
         ProjectMember pm = new ProjectMember(){
             ProjId = Convert.ToInt16(ProjectId),
-            UserId = curruser,
+            UserId = curruser.Id,
             Joined_At = DateTime.Now,
         };
         _dbContext.ProjectMember.Add(pm);
         _dbContext.SaveChanges();
         int taskId = Convert.ToInt16(TaskId);
         var task = _dbContext.Task.FirstOrDefault(t => t.Id == taskId);
-        task.Assigned_to = curruser;
+        task.Assigned_to = curruser.Id;
+        task.Name = curruser.FirstName + " " + curruser.LastName;
         _dbContext.Task.Update(task);
         _dbContext.SaveChanges();
         return RedirectToAction("AllProjects","Project"); 
         }
     return RedirectToAction("AllProjects","Project");   
     }
+    public bool IsInvitationUnique(string selectedUser,string TaskId,string ProjectId){
+        return  _dbContext.Invitation.Any(i => i.Recepant_Id == selectedUser && i.TaskId == Convert.ToInt16(TaskId) && i.ProjectId == Convert.ToInt16(ProjectId));
+    }
 
+    // 
+     public async Task<IActionResult> GetTaskFile(int id){
+         var file = _dbContext.TaskFile.FirstOrDefault(tf => tf.Id == id);
+         if(file != null){
+            return File(file.Data,file.ContentType,file.FileName);
+         }
+         return NotFound();
+     }
 }

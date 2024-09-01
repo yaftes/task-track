@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-public class SubTaskWeight {
+public class SubTaskWeight  {
     [Key]
     public int Id { get; set; }
     [Range(1,1000)]

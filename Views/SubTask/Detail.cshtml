@@ -64,7 +64,6 @@
                 <b class="d-block"></b>
             </p>
             </div>
-
             <h5 class="mt-5 text-muted">Project files</h5>
             <ul class="list-unstyled">
             <li>
@@ -84,11 +83,12 @@
             </li>
             </ul>
         <a asp-controller = "Task" asp-action = "TaskDetail" asp-route-Id = "@Model.SubTask.TaskId" class="badge badge-danger">Back</a>
+        <a asp-controller = "SubTask" asp-action = "StatusUpdate" asp-route-Id = "@Model.SubTask.Id" class="badge badge-success">SubTask Completed?</a>
+
         </div>
         </div>
     </div>
     <!-- /.card-body -->
     </div>
     <!-- /.card -->
-
 </section>

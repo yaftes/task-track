@@ -1,10 +1,9 @@
 @model RegisterViewModel
 @using ProjectManagementApp.Models
 
-<div class="register-box">
-  <div class="register-logo">
-    <a href="#"><b>Admin</b></a>
-  </div>
+<div class="row mx-4 mt-3">
+<div class="col-6 my-2 register-box round">
+
   <div class="card">
     <div class="card-body register-card-body">
       <p class="login-box-msg">Register a new member</p>
@@ -29,7 +28,6 @@
             </div>
           </div>
         </div>
-
 
         <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="UserName" asp-for="UserName">
@@ -67,7 +65,6 @@
           </div>
         </div>
 
-
       <div class="form-group">
         <label>Register As</label>
         <select  name="select" class="form-control select2" style="width: 100%;">
@@ -76,20 +73,23 @@
         </select>
       </div> 
 
-    
-    @* <div class="form-group">
-        <label>Skills</label>
-        @foreach (var skill in Model.ListofSkill)
-        {
-            <div class="form-check">
-                <input type="checkbox" asp-for="SelectedSkills" value="@skill.Id" class="form-check-input">
-                <label class="form-check-label">@skill.SkillName</label>
+      <div>
+            <div class="form-group">
+                <label for="skills">Select Skills</label>
+                <select id="skills" name="selectedskills" class="form-control" multiple onchange="updateSelected()">
+                    @foreach(var skill in Model.ListofSkill) {
+                        <option value="@skill.Id">@skill.SkillName</option>
+                    }
+                </select>
+            </div> 
+
+            <div id="selected-options" class="border p-2">
+                <strong>Selected Skills:</strong>
+                <div id="display">None</div>
             </div>
-        }
-    </div> *@
-      
-  
-        <div class="row">
+        </div>
+
+        <div class="row mt-3">
           <div class="col-8">
             
           </div>
@@ -111,14 +111,74 @@
           <i class="fab fa-plus mr-2"></i>
           Add New Skill
         </a>
+        </div>
+
+          </div>
+          <!-- /.form-box -->
+        </div><!-- /.card -->
       </div>
 
-    </div>
-    <!-- /.form-box -->
-  </div><!-- /.card -->
+        <div class="col-6">
+          <div class="header">
+            <span>Registered Users</span>
+          </div>
+          <div class="body">
+              <!-- USERS LIST -->
+                <div class="card">
+
+                  <div class="card-header bg-secondary">
+                    <h3 class="card-title">Latest Members</h3>
+
+                    <div class="card-tools">
+                      <span class="badge badge-light">@Model.ApplicationUsers.Count()</span>
+                    </div>
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body p-0">
+                    <ul class="users-list clearfix">
+                      @foreach(var pm in Model.ApplicationUsers){
+                      <li>
+                          @if (pm?.ProfilePicture != null){
+                              <div class="image">
+                                  <img src="@Url.Action("GetProfilePicture", "User", new { userId = pm.Id })" alt="Profile Picture" width="300" height="300"/>
+                              </div>
+                          }
+                          else {
+                              <div class="image">
+                                  <img src="~/images/default-profile.png" alt="Default Profile Picture" />
+                              </div>
+                          }
+                        <a class="users-list-name" href="#">@pm.FirstName</a>
+                        <span class="users-list-date">@pm.CreatedTime</span>
+                      </li>
+                      }
+                    </ul>
+                    <!-- /.users-list -->
+                  </div>
+                  <!-- /.card-body -->
+                  <hr>
+
+                  <div class="card-footer text-center bg-secondary">
+                    <a href="javascript:">View All Users</a>
+                  </div>
+                  <!-- /.card-footer -->
+                </div>
+                <!--/.card -->
+              
+  </div>
+</div>
+
+
 </div>
 <!-- /.register-box -->
-
+<script>
+    function updateSelected() {
+        const select = document.getElementById('skills');
+        const display = document.getElementById('display');
+        const selectedOptions = Array.from(select.selectedOptions).map(option => option.text);
+        display.innerHTML = selectedOptions.length > 0 ? selectedOptions.join('<br>') : 'None';
+    }
+</script>
 <!-- jQuery -->
 <script src="../../plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->

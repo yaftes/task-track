@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+
 public class ProjectController : Controller {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
@@ -14,7 +15,8 @@ public class ProjectController : Controller {
             this._userManager = _userManager;
             this._roleManager = _roleManager;
             this._dbContext = _dbContext;
-        }     
+        }  
+
      [HttpGet]
      public IActionResult ProjectCreate(){
         
@@ -23,17 +25,14 @@ public class ProjectController : Controller {
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ProjectCreate(TaskModel model)
+    public async Task<IActionResult> ProjectCreate(TaskModel model,List<IFormFile> files)
     {
         var curruser = await _userManager.GetUserAsync(User);
-         if (curruser == null)
-         {
-         return View();
+        if (curruser == null){
+            return View();
         }
         if(ModelState.IsValid){
-
-             Project project = new Project
-             {
+             Project project = new Project{
                  Title = model.Title,
                  Description = model.Description,
                  Created_At = DateTime.Now,
@@ -52,12 +51,26 @@ public class ProjectController : Controller {
                     Joined_At = DateTime.Now  };
              _dbContext.ProjectMember.Add(pm);
              _dbContext.SaveChanges();
-          
-
+            
+            if(files != null && files.Count() != 0){
+                foreach(var file in files){
+                    ProjectFile projectfile = new ProjectFile(){
+                        FileName = file.FileName,
+                        ContentType = file.ContentType,
+                        ProjectId = project.Id,
+                    };
+                    using (var memorystream = new MemoryStream()){
+                        await file.CopyToAsync(memorystream);
+                        projectfile.Data = memorystream.ToArray();
+                    }
+                    _dbContext.ProjectFile.Add(projectfile);
+                    _dbContext.SaveChanges();
+                }
+            }
         return RedirectToAction("AllProjects", "Project");}
         return View(model);
-    }
-
+        }
+      
       [HttpGet]
  
      public async Task<IActionResult> ProjectEdit(int id){
@@ -72,9 +85,7 @@ public class ProjectController : Controller {
         };
          return View(model);
      }
-
      [HttpPost]
-
       public async Task<IActionResult> ProjectEdit(ProjectModel model){
         var currpro = _dbContext.Project.FirstOrDefault(p => p.Id == model.ProjectId);
         currpro.Title = model.Title;    
@@ -106,10 +117,10 @@ public class ProjectController : Controller {
         .Where(pm => pm.UserId == curruser.Id)
         .Select(pm => pm.ProjId)
         .ToListAsync();
-        var _projects = await _dbContext.Project
+      var _projects = await _dbContext.Project
         .Where(p => projectIds.Contains(p.Id))
         .ToListAsync();
-        var inv = _dbContext.Invitation.Where(i => i.Recepant_Id == curruser.Id).ToList();
+      var inv = _dbContext.Invitation.Where(i => i.Recepant_Id == curruser.Id).ToList();
         ProjectDetail projectDetails = new ProjectDetail(){
             Projects = _projects,
             Invitations = inv,
@@ -122,6 +133,7 @@ public class ProjectController : Controller {
         var curruser = await _userManager.GetUserAsync(User); 
         var tasks =  _dbContext.Task.Where(t => t.ProjectId == id).ToList();
         var _project = _dbContext.Project.FirstOrDefault(p=>p.Id == id);
+        var projfiles = _dbContext.ProjectFile.Where(pf => pf.ProjectId == _project.Id).ToList();
         var usersInProject = await _dbContext.ProjectMember
         .Where(pm => pm.ProjId == id)
         .Select(pm => pm.UserId)
@@ -131,17 +143,39 @@ public class ProjectController : Controller {
         .Where(u => usersInProject.Contains(u.Id))
         .ToListAsync();
         var _AvailableUsers = _userManager.Users.ToList();
+        var taskweight = new List<TaskWeight>();
+        foreach(var ts in tasks){
+            var tw = _dbContext.TaskWeight.FirstOrDefault(tw => tw.TaskId == ts.Id);
+            if(tw != null){
+             tw.Weight = Math.Round(tw.Weight, 2);
+             taskweight.Add(tw);
+            } 
+        }
+
+        //
+        double totalprogress = 0.0;
+        foreach(var ts in tasks){
+            var tw = _dbContext.TaskWeight.FirstOrDefault(tw => tw.TaskId == ts.Id);    
+            totalprogress += ts.Progress * tw.Weight / 100;
+        }
+        _project.Progress = totalprogress;
+        _dbContext.Project.Update(_project);
+        _dbContext.SaveChanges();
+        _project.Progress = Math.Round(_project.Progress, 2);
+        
+
+
         var message = _dbContext.Message.Where(m => m.ProjectId == id).ToList();
             ProjectDetail projectDetails = new ProjectDetail(){
             Project = _project,
             Projectmembers = users,
             Tasks = tasks,
             Messages = message,
-            AvailableUsers = _AvailableUsers, 
+            AvailableUsers = _AvailableUsers,
+            TaskWeight = taskweight,
+            ProjectFiles = projfiles,    
         };
-
         return View(projectDetails);
-      
      } 
 
      [HttpPost]
@@ -165,15 +199,14 @@ public class ProjectController : Controller {
      public IActionResult DashBoard(){
         return View();
      }
+
+     public async Task<IActionResult> GetProjectFile(int id){
+         var file = _dbContext.ProjectFile.FirstOrDefault(pf => pf.Id == id);
+         if(file != null){
+            return File(file.Data,file.ContentType,file.FileName);
+         }
+         return NotFound();
+     }
       
 }
 
-
-
-// if the current logged in user is pm which has a role to create a project
-// if(curruser == project.createdBy)
-// view all tasks 
-// else view all related tasks curruser == task-assigned_To
-// taskDetail
-// the is an option in which we can add the subTasks 
-// and 

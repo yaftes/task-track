@@ -12,17 +12,15 @@ public class Project {
     public DateTime Start_Date { get; set;}   
     public DateTime End_Date {get; set;} 
     public DateTime Update_Date {get; set;}
-
-
+    public double Progress {get;set;} = 0.0;
     // Navigation Properties
     public ApplicationUser? ApplicationUser { get; set; }
     public  List<Task>? Tasks { get; set;} 
     public List<Message>? Messages {get;set;}
-
+    public ProjectStatus? ProjectStatus { get; set; } 
+    public List<ProjectFile>? ProjectFiles { get; set; }
     // Foreign Keys
-    
     [ForeignKey("ApplicationUser")]
     public string? Created_By { get; set;}
-
 
 }

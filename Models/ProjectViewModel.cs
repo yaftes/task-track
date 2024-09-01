@@ -8,7 +8,6 @@ public class ProjectModel {
     public string Description { get; set; } = "";
     public string Start_Date {get; set;} = "";
     public string End_Date {get; set;} = "";
-
     public Project project {get;set;}
     public List<ApplicationUser> ProjectMembers  {get;set;} = new ();    
 

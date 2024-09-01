@@ -7,6 +7,7 @@ public class TaskModel {
     public string Description { get; set; } = "";
     public string? Start_Date { get; set;}   
     public string? End_Date {get; set;} 
+    public double Point {get;set;} = 0.0;
     public List<ApplicationUser>? AvailableUsers {get;set;}
     public ApplicationUser? SelectedUser {get;set;}
 

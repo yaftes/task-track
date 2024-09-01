@@ -12,6 +12,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser,Applicatio
         public DbSet<Invitation> Invitation {get;set;}
         public DbSet<TaskWeight> TaskWeight  {get;set;}
         public DbSet<SubTaskWeight> SubTaskWeight {get;set;}
+        public DbSet<SubTaskStatus> SubTaskStatus {get;set;}
+        public DbSet<TaskStatus> TaskStatus {get;set;}
+        public DbSet<ProjectStatus> ProjectStatus {get;set;}
+        public DbSet<ProjectFile> ProjectFile {get;set;}
+        public DbSet<TaskFile> TaskFile {get;set;}
+        public DbSet<SubTaskFile> SubTaskFile {get;set;}
 
 
 }

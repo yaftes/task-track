@@ -12,9 +12,6 @@ public class SubTaskModel {
 
     [Range(1,1000)]
     public int Point {get;set;}
-
-    
-
-    
+   
   
 }

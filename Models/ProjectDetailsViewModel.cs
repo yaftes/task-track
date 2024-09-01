@@ -9,5 +9,7 @@ public class ProjectDetail {
     public List<Message>? Messages {get;set;}
     public InvitationModel? InvitationModel {get;set;}
     public List<Invitation>? Invitations {get;set;}
+    public List<TaskWeight>? TaskWeight {get;set;}
+    public List<ProjectFile>? ProjectFiles {get;set;}
 
 }

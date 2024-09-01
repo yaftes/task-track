@@ -2,13 +2,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-public class TaskStatus {
+public class ProjectStatus {
     [Key]
     public int Id {get;set;}
     public string? Status {get;set;}
     // Navigation Properties
-    public Task? Task {get;set;}
+    public Project? Project {get;set;}
     // foreign Key
-    [ForeignKey("Task")]
-    public int TaskId {get;set;}
+    [ForeignKey("Project")]
+    public int ProjectId {get;set;}
 }

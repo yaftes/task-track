@@ -8,7 +8,6 @@ public class AdminController : Controller {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly ApplicationDbContext _dbContext;
-
     private readonly SignInManager<ApplicationUser> _signInManager;
     public AdminController(
         UserManager<ApplicationUser> _userManager,
@@ -20,12 +19,12 @@ public class AdminController : Controller {
             this._dbContext = _dbContext;
             this._signInManager = _signInManager;
         }
-    
             [HttpGet]
-            public IActionResult Register()
-            {
+            public IActionResult Register(){
+                var users = _userManager.Users.ToList();
                 var model = new RegisterViewModel(){
                     ListofSkill = _dbContext.Skill.ToList(),
+                    ApplicationUsers = users,
                 };
                 
                 return View(model);
@@ -33,23 +32,30 @@ public class AdminController : Controller {
 
             [HttpPost]
             [ValidateAntiForgeryToken]
-            public async Task<IActionResult> Register(RegisterViewModel model,string select)
+            public async Task<IActionResult> Register(RegisterViewModel model,string select,List<string> selectedskills)
             {
                 if (ModelState.IsValid)
                 {
-                    ApplicationUser user = new ApplicationUser()
-                    {
+
+                    ApplicationUser user = new ApplicationUser(){
                         FirstName = model.FirstName,
                         LastName = model.LastName,
                         Email = model.Email,
                         UserName = model.UserName,
-                        Skills = _dbContext.Skill.ToList(),
-                        
                     };
                     
                     var result = await _userManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
+                        foreach(var skill in selectedskills){
+                            UserSkill us = new UserSkill(){
+                                UserId = user.Id,
+                                SkillId = Convert.ToInt16(skill)
+                            };
+                            _dbContext.UserSkill.Add(us);
+                        }
+                        _dbContext.SaveChanges();
+
                         await _userManager.AddToRoleAsync(user,select);
 
                         return RedirectToAction("Login", "Login");

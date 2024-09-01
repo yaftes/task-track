@@ -6,6 +6,7 @@ public class Skill {
     [Required]
     [StringLength(100)]
     public string SkillName { get; set; } = "";
+    
     // Navigation Properties
     public virtual List<ApplicationUser> ApplicationUser { get; set; }   = new ();
     

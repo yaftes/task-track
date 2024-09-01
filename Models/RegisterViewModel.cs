@@ -23,6 +23,8 @@ public class RegisterViewModel
 
     public List<Skill>? ListofSkill {get;set;}
     public List<int> SelectedSkills { get; set; } = new List<int>();
+    
+    public List<ApplicationUser>? ApplicationUsers {get;set;}
   
     
 }

@@ -1,23 +1,18 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> _signInManager
 @inject UserManager<ApplicationUser> _userManager
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Home Page</title>
-
-   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
-    <!-- pace-progress -->
   <link rel="stylesheet" href="../../plugins/pace-progress/themes/black/pace-theme-flat-top.css">
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -30,10 +25,6 @@
   <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
-
-  <!-- Commet -->
-
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
   <!-- daterange picker -->
   <link rel="stylesheet" href="../../plugins/daterangepicker/daterangepicker.css">
@@ -58,7 +49,6 @@
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
-
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
@@ -210,18 +200,17 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         @{var currentUser = await _userManager.GetUserAsync(User);}
-
-        @if (currentUser?.ProfilePicture == null)
-          {
+        @if (currentUser?.ProfilePicture != null)
+        {
             <div class="image">
-          <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar.png">
-        </div>
+                <img src="@Url.Action("GetProfilePicture", "User", new { userId = currentUser.Id })" alt="Profile Picture" width="400" height="400" download/>
+            </div>
         }
-        else{
-           <div class="image">
-          <img alt="Avatar" class="table-avatar" src="@currentUser.ProfilePicture">
-        </div>
-
+        else
+        {
+            <div class="image">
+                <img src="~/images/default-profile.png" alt="Default Profile Picture" />
+            </div>
         }
         
         <div class="info">
@@ -260,20 +249,14 @@
     <!-- /.sidebar -->
   </aside>
 
-  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <!-- /.content-header -->
-
-    <!-- Main content -->
     <div class="content">
        @RenderBody()
     </div>
     <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
 
-  <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
     <div class="p-3">
@@ -282,7 +265,6 @@
     </div>
   </aside>
   <!-- /.control-sidebar -->
-
   <!-- Main Footer -->
   <footer class="main-footer">
     <!-- To the right -->
@@ -504,6 +486,7 @@
 <script src="../../plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
 <!-- InputMask -->
 <script src="../../plugins/moment/moment.min.js"></script>
+
 <script src="../../plugins/inputmask/jquery.inputmask.min.js"></script>
 <!-- date-range-picker -->
 <script src="../../plugins/daterangepicker/daterangepicker.js"></script>
@@ -557,7 +540,7 @@
         format: 'MM/DD/YYYY hh:mm A'
       }
     })
-    //Date range as a button
+
     $('#daterange-btn').daterangepicker(
       {
         ranges   : {
