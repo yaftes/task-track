@@ -18,6 +18,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser,Applicatio
         public DbSet<ProjectFile> ProjectFile {get;set;}
         public DbSet<TaskFile> TaskFile {get;set;}
         public DbSet<SubTaskFile> SubTaskFile {get;set;}
+        public DbSet<Report> Report {get;set;}
+        public DbSet<ReportFile> ReportFile {get;set;}
 
 
 }

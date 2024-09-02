@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ProjectManagementApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240902140719_Report")]
+    partial class Report
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -469,33 +472,6 @@ namespace ProjectManagementApp.Migrations
                     b.ToTable("Report");
                 });
 
-            modelBuilder.Entity("ReportFile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ContentType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("Data")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("FileName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ReportId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReportId");
-
-                    b.ToTable("ReportFile");
-                });
-
             modelBuilder.Entity("Skill", b =>
                 {
                     b.Property<int>("Id")
@@ -927,17 +903,6 @@ namespace ProjectManagementApp.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("ReportFile", b =>
-                {
-                    b.HasOne("Report", "Report")
-                        .WithMany("ReportFiles")
-                        .HasForeignKey("ReportId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Report");
-                });
-
             modelBuilder.Entity("SubTask", b =>
                 {
                     b.HasOne("Task", "Task")
@@ -1059,11 +1024,6 @@ namespace ProjectManagementApp.Migrations
                     b.Navigation("Reports");
 
                     b.Navigation("Tasks");
-                });
-
-            modelBuilder.Entity("Report", b =>
-                {
-                    b.Navigation("ReportFiles");
                 });
 
             modelBuilder.Entity("SubTask", b =>

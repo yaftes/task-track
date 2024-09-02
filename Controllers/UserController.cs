@@ -22,7 +22,7 @@ public  class UserController : Controller {
     }
 
     [HttpPost]
-    public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model,IFormFile Image)
+    public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
     {
         if (ModelState.IsValid)
         {
@@ -32,25 +32,26 @@ public  class UserController : Controller {
                 return NotFound(); 
             }
 
-            await _userManager.ChangePasswordAsync(curruser,model.OldPassword,model.Password);
- 
-            if (Image != null && Image.Length > 0) {
-                
-                // change the file to binary format
-                using (var datastream = new MemoryStream())
-                {
-                    await Image.CopyToAsync(datastream);
-                    curruser.ProfilePicture = datastream.ToArray();
-                }
-                await _userManager.UpdateAsync(curruser);
-                return RedirectToAction("Login", "Login"); 
-            }
-
-           return View();
+          await _userManager.ChangePasswordAsync(curruser,model.OldPassword,model.Password);
+          await _userManager.UpdateAsync(curruser);
+          return RedirectToAction("AllProjects", "Project"); 
         }
-        
         return View(); 
     }
+
+    [HttpPost]
+    public async Task<IActionResult> ChangeProfile(IFormFile userimage){
+            if(userimage.Length > 0 && userimage != null){
+                var curruser = await _userManager.GetUserAsync(User);
+                using(var ms = new MemoryStream()){
+                    await userimage.CopyToAsync(ms);
+                    curruser.ProfilePicture = ms.ToArray();
+                }
+                await _userManager.UpdateAsync(curruser);
+                return RedirectToAction("AllProjects","Project");
+            }
+         return View();
+        }
 
     [HttpGet]
     public async Task<IActionResult> GetProfilePicture(string userId)

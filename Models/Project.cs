@@ -19,6 +19,7 @@ public class Project {
     public List<Message>? Messages {get;set;}
     public ProjectStatus? ProjectStatus { get; set; } 
     public List<ProjectFile>? ProjectFiles { get; set; }
+    public List<Report>? Reports { get; set; }
     // Foreign Keys
     [ForeignKey("ApplicationUser")]
     public string? Created_By { get; set;}

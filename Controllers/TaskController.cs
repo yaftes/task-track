@@ -81,9 +81,9 @@ public class TaskController : Controller {
                         FileName = file.FileName,
                         ContentType = file.ContentType,
                     };
-                    using(var memorystream2 = new MemoryStream()){
-                          await file.CopyToAsync(memorystream2);
-                          taskfile.Data = memorystream2.ToArray();
+                    using(var taskdatastream = new MemoryStream()){
+                          await file.CopyToAsync(taskdatastream);
+                          taskfile.Data = taskdatastream.ToArray();
                     }
                     _dbContext.TaskFile.Add(taskfile);
                     _dbContext.SaveChanges();

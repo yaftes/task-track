@@ -23,7 +23,6 @@ public class Task {
     public TaskStatus? TaskStatus {get;set;}
     public virtual List<TaskFile>? TaskFiles {get;set;}
 
-    //
     // Foreign Keys
     [ForeignKey("Project")]
     public int ProjectId {get;set;}

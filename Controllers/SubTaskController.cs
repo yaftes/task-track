@@ -98,9 +98,11 @@ public class SubTaskController : Controller {
     public IActionResult Detail(int Id){
         var subtask = _dbContext.SubTask.FirstOrDefault(s=>s.Id == Id);
         var subtaskweight = _dbContext.SubTaskWeight.FirstOrDefault(stw => stw.SubTaskId == subtask.Id);
+        var subtaskfiles = _dbContext.SubTaskFile.Where(tf => tf.SubTaskId == subtask.Id).ToList();
         SubTaskDetail sbd = new SubTaskDetail(){
             SubTask = subtask,
             SubTaskWeight = subtaskweight,  
+            SubTaskFiles = subtaskfiles
         };
         return View(sbd);
     }
@@ -120,6 +122,14 @@ public class SubTaskController : Controller {
             Id = task.Id
         });
     }
+
+    public async Task<IActionResult> GetSubTaskFile(int id){
+         var file = _dbContext.SubTaskFile.FirstOrDefault(tf => tf.Id == id);
+         if(file != null){
+            return File(file.Data,file.ContentType,file.FileName);
+         }
+         return NotFound();
+     }
   
     
 }

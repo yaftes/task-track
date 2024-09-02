@@ -1,0 +1,30 @@
+@using ProjectManagementApp.Models
+@model ReportDetail
+
+<div>
+    <div class="card-header mx-5 my-4">
+      <h3 class="card-title"> All Reports </h3>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body p-0 mx-5">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Report</th>
+            <th style="width: 40px">Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+        @foreach(var report in Model.Reports){
+          <tr>
+            <td>@report.Title</td>
+            <td><a asp-controller = "Report" asp-action = "ReportDetail" asp-route-Id = "@report.Id"><span class="badge bg-warning">Detail</span></a></td>
+          </tr>
+        }   
+        </tbody>
+      </table>
+    </div>
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+</div>

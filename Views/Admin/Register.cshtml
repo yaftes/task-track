@@ -138,18 +138,22 @@
                     <ul class="users-list clearfix">
                       @foreach(var pm in Model.ApplicationUsers){
                       <li>
+                        <div>
                           @if (pm?.ProfilePicture != null){
-                              <div class="image">
-                                  <img src="@Url.Action("GetProfilePicture", "User", new { userId = pm.Id })" alt="Profile Picture" width="300" height="300"/>
+                          <div class="image">
+                                  <img src="@Url.Action("GetProfilePicture", "User", new { userId = pm.Id })" alt="Profile Picture" class="table-avatar/>
+                                  <
                               </div>
                           }
                           else {
                               <div class="image">
-                                  <img src="~/images/default-profile.png" alt="Default Profile Picture" />
+                                  <img alt="Avatar" class="table-avatar" src="../../dist/img/avatar4.png">
                               </div>
                           }
                         <a class="users-list-name" href="#">@pm.FirstName</a>
                         <span class="users-list-date">@pm.CreatedTime</span>
+                        <hr>
+                        </div>
                       </li>
                       }
                     </ul>
