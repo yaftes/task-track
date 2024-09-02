@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
 
 
 public class ProjectController : Controller {
@@ -71,8 +72,7 @@ public class ProjectController : Controller {
         return View(model);
         }
       
-      [HttpGet]
- 
+    [HttpGet]
      public async Task<IActionResult> ProjectEdit(int id){
         var project = _dbContext.Project.FirstOrDefault(p=>p.Id == id);
         ProjectModel model = new ProjectModel(){
@@ -127,23 +127,42 @@ public class ProjectController : Controller {
         };
         return View(projectDetails);
      } 
+     
 
      [HttpGet]
-     public async Task<IActionResult> ProjectDetail(int? id){
+     public async Task<IActionResult> ProjectDetail(int? Id){
+
         var curruser = await _userManager.GetUserAsync(User); 
-        var tasks =  _dbContext.Task.Where(t => t.ProjectId == id).ToList();
-        var _project = _dbContext.Project.FirstOrDefault(p=>p.Id == id);
+        var tasks =  _dbContext.Task.Where(t => t.ProjectId == Id).ToList();
+        var _project = _dbContext.Project.FirstOrDefault(p=>p.Id == Id);
         var projfiles = _dbContext.ProjectFile.Where(pf => pf.ProjectId == _project.Id).ToList();
         var usersInProject = await _dbContext.ProjectMember
-        .Where(pm => pm.ProjId == id)
+        .Where(pm => pm.ProjId == Id)
         .Select(pm => pm.UserId)
         .Distinct()
         .ToListAsync();
+
         var users = await _dbContext.Users
         .Where(u => usersInProject.Contains(u.Id))
         .ToListAsync();
+
+
         var _AvailableUsers = _userManager.Users.ToList();
+        var userskills = new List<Skillv>();
+        foreach(var user in _AvailableUsers){
+            var usrskill = new Skillv();
+            usrskill.userId = user.Id;
+            usrskill.Skills = [];
+            int[] skillids = _dbContext.UserSkill.Where(u => u.UserId == user.Id).Select(u => u.SkillId).ToArray();
+            foreach(var n in skillids){
+                var name = _dbContext.Skill.FirstOrDefault(s => s.Id == n);
+                usrskill.Skills.Add(name.SkillName);
+            }
+            userskills.Add(usrskill);
+        }
+
         var taskweight = new List<TaskWeight>();
+
         foreach(var ts in tasks){
             var tw = _dbContext.TaskWeight.FirstOrDefault(tw => tw.TaskId == ts.Id);
             if(tw != null){
@@ -151,21 +170,18 @@ public class ProjectController : Controller {
              taskweight.Add(tw);
             } 
         }
-
-        //
+        
         double totalprogress = 0.0;
+        if(tasks != null){
         foreach(var ts in tasks){
             var tw = _dbContext.TaskWeight.FirstOrDefault(tw => tw.TaskId == ts.Id);    
             totalprogress += ts.Progress * tw.Weight / 100;
-        }
+        }}
         _project.Progress = totalprogress;
         _dbContext.Project.Update(_project);
         _dbContext.SaveChanges();
-        _project.Progress = Math.Round(_project.Progress, 2);
         
-
-
-        var message = _dbContext.Message.Where(m => m.ProjectId == id).ToList();
+        var message = _dbContext.Message.Where(m => m.ProjectId == Id).ToList();
             ProjectDetail projectDetails = new ProjectDetail(){
             Project = _project,
             Projectmembers = users,
@@ -173,18 +189,20 @@ public class ProjectController : Controller {
             Messages = message,
             AvailableUsers = _AvailableUsers,
             TaskWeight = taskweight,
-            ProjectFiles = projfiles,    
+            ProjectFiles = projfiles,
+            UserSkills = userskills,    
+           
         };
         return View(projectDetails);
      } 
 
      [HttpPost]
      [ValidateAntiForgeryToken]
-     public async  Task<IActionResult> ProjectDetail(int id,string message){
+     public async  Task<IActionResult> ProjectDetail(int Id,string message){
         var curruser = await _userManager.GetUserAsync(User);
         Message msg = new Message(){
             Text = message,
-            ProjectId = id,
+            ProjectId = Id,
             CreatorId = curruser.Id,
             FullName = curruser.FirstName + " " + curruser.LastName,
             Created_At = DateTime.Now,
@@ -193,7 +211,7 @@ public class ProjectController : Controller {
         _dbContext.Message.Add(msg);
         _dbContext.SaveChanges();
         return RedirectToAction("ProjectDetail","Project",new {
-            Id = id
+            Id = Id
         });
      }
      public IActionResult DashBoard(){
@@ -209,4 +227,3 @@ public class ProjectController : Controller {
      }
       
 }
-

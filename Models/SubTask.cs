@@ -13,13 +13,13 @@ public class SubTask {
     public DateTime Start_Date { get; set;}   
     public DateTime End_Date {get; set;} 
     public DateTime Update_Date {get; set;}
+    public string? Status {get;set;}
     
     // Navigation Properties
     public Task? Task { get; set;} 
     public SubTaskWeight? SubTaskWeight {get;set;}
-    public SubTaskStatus? SubTaskStatus {get;set;}
     public List<SubTaskFile>? SubTaskFiles {get; set;}
-    //
+
     // Foreign Keys
     [ForeignKey("Task")]
     public int TaskId {get;set;}

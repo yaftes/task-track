@@ -1,6 +1,8 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 public class TaskFile  {
+    [Key]
     public int Id { get; set; }
     public string? FileName { get; set; }
     public string? ContentType { get; set; }

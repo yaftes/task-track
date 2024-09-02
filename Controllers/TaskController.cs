@@ -36,29 +36,14 @@ public class TaskController : Controller {
             };
             _dbContext.Task.Add(task);
             _dbContext.SaveChanges();
-
-              if(taskfiles != null){
-                foreach(var file in taskfiles){
-                    TaskFile taskfile = new TaskFile(){
-                        TaskId = task.Id,
-                        FileName = file.FileName,
-                        ContentType = file.ContentType,
-                    };
-                    using(var memorystream = new MemoryStream()){
-                          await file.CopyToAsync(memorystream);
-                          taskfile.Data = memorystream.ToArray();
-                    }
-                    _dbContext.TaskFile.Add(taskfile);
-                    _dbContext.SaveChanges();
-                }
-            
             TaskWeight taskWeight = new TaskWeight(){
                 TaskId = task.Id,
                 Point = model.Point,
             };
             _dbContext.TaskWeight.Add(taskWeight);
-            _dbContext.SaveChanges();   
+            _dbContext.SaveChanges(); 
 
+        
             TaskStatus taskStatus = new TaskStatus(){
                 TaskId = task.Id,
             };
@@ -71,6 +56,7 @@ public class TaskController : Controller {
                 var tw = _dbContext.TaskWeight.FirstOrDefault(tw => tw.TaskId == ts.Id);
                 totalpoint += tw.Point;
             };
+
             foreach(var ts in tasks){
                  var tw = _dbContext.TaskWeight.FirstOrDefault(tw => tw.TaskId == ts.Id);
                  tw.Weight = tw.Point / totalpoint * 100;
@@ -88,6 +74,21 @@ public class TaskController : Controller {
             _dbContext.SaveChanges();   
             
           
+            if(taskfiles != null && taskfiles.Count() != 0){
+                foreach(var file in taskfiles){
+                    TaskFile taskfile = new TaskFile(){
+                        TaskId = task.Id,
+                        FileName = file.FileName,
+                        ContentType = file.ContentType,
+                    };
+                    using(var memorystream2 = new MemoryStream()){
+                          await file.CopyToAsync(memorystream2);
+                          taskfile.Data = memorystream2.ToArray();
+                    }
+                    _dbContext.TaskFile.Add(taskfile);
+                    _dbContext.SaveChanges();
+                }
+            
             }
         }
         return  RedirectToAction("ProjectDetail","Project", new {
@@ -106,6 +107,7 @@ public class TaskController : Controller {
                 subtaskweight.Add(stw);
             }
         }
+        
         var taskfiles = _dbContext.TaskFile.Where(tf => tf.TaskId == task.Id).ToList();
         task.Progress = Math.Round(task.Progress,2);
         TaskDetail taskDetail = new TaskDetail(){

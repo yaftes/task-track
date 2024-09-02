@@ -484,6 +484,9 @@ namespace ProjectManagementApp.Migrations
                     b.Property<DateTime>("Start_Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("TaskId")
                         .HasColumnType("int");
 
@@ -545,8 +548,7 @@ namespace ProjectManagementApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SubTaskId")
-                        .IsUnique();
+                    b.HasIndex("SubTaskId");
 
                     b.ToTable("SubTaskStatus");
                 });
@@ -885,8 +887,8 @@ namespace ProjectManagementApp.Migrations
             modelBuilder.Entity("SubTaskStatus", b =>
                 {
                     b.HasOne("SubTask", "SubTask")
-                        .WithOne("SubTaskStatus")
-                        .HasForeignKey("SubTaskStatus", "SubTaskId")
+                        .WithMany()
+                        .HasForeignKey("SubTaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -984,8 +986,6 @@ namespace ProjectManagementApp.Migrations
             modelBuilder.Entity("SubTask", b =>
                 {
                     b.Navigation("SubTaskFiles");
-
-                    b.Navigation("SubTaskStatus");
 
                     b.Navigation("SubTaskWeight");
                 });

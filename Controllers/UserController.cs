@@ -22,7 +22,7 @@ public  class UserController : Controller {
     }
 
     [HttpPost]
-    public async Task<IActionResult> ChangePassword(IFormFile Image)
+    public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model,IFormFile Image)
     {
         if (ModelState.IsValid)
         {
@@ -32,6 +32,8 @@ public  class UserController : Controller {
                 return NotFound(); 
             }
 
+            await _userManager.ChangePasswordAsync(curruser,model.OldPassword,model.Password);
+ 
             if (Image != null && Image.Length > 0) {
                 
                 // change the file to binary format

@@ -28,6 +28,7 @@ public class SubTaskController : Controller {
                 Created_At = DateTime.Now,
                 Update_Date = DateTime.Now,
                 TaskId = Id,
+                Status = "Pending",
             };
             _dbContext.SubTask.Add(subTask);
             _dbContext.SaveChanges();
@@ -36,11 +37,6 @@ public class SubTaskController : Controller {
                 Point = model.Point,
             };
             _dbContext.SubTaskWeight.Add(sb);
-            _dbContext.SaveChanges();
-            SubTaskStatus subTaskStatus = new SubTaskStatus(){
-                SubTaskId = subTask.Id,
-            };
-            _dbContext.SubTaskStatus.Add(subTaskStatus);
             _dbContext.SaveChanges();
 
             // add the subtaskfiles here
@@ -68,26 +64,25 @@ public class SubTaskController : Controller {
                 totalpoint += stw.Point;   
             } 
 
-        foreach(var st in subtasks){
-            var stw = _dbContext.SubTaskWeight.FirstOrDefault(sbw => sbw.SubTaskId == st.Id);
-            stw.Weight = stw.Point / totalpoint * 100;
-            _dbContext.SubTaskWeight.Update(stw);
-        }
-         _dbContext.SaveChanges();
+            foreach(var st in subtasks){
+                var stw = _dbContext.SubTaskWeight.FirstOrDefault(sbw => sbw.SubTaskId == st.Id);
+                stw.Weight = stw.Point / totalpoint * 100;
+                _dbContext.SubTaskWeight.Update(stw);
+            }
+            _dbContext.SaveChanges();
          
         var task = _dbContext.Task.FirstOrDefault(t => t.Id == Id);
 
         double totalprogress = 0.0;
 
         foreach(var st in subtasks){
-            var sts = _dbContext.SubTaskStatus.FirstOrDefault(sts => sts.SubTaskId == st.Id);
             var stw = _dbContext.SubTaskWeight.FirstOrDefault(sbw => sbw.SubTaskId == st.Id);
-            if(sts != null){
-                if(sts.Status == "Completed"){
+            if(st != null){
+                if(st.Status == "Completed"){
                 totalprogress += stw.Weight;
             }
             } 
-        }
+         }
             task.Progress = totalprogress;
             _dbContext.Task.Update(task);
             _dbContext.SaveChanges();
@@ -112,9 +107,8 @@ public class SubTaskController : Controller {
     public IActionResult StatusUpdate(int Id){
         var subtask = _dbContext.SubTask.FirstOrDefault(s => s.Id == Id);
         var subtaskweight = _dbContext.SubTaskWeight.FirstOrDefault(sw => sw.SubTaskId == subtask.Id);
-        var subtaskstatus = _dbContext.SubTaskStatus.FirstOrDefault(s => s.SubTaskId == subtask.Id);
-        subtaskstatus.Status = "Completed";
-        _dbContext.SubTaskStatus.Update(subtaskstatus);
+        subtask.Status = "Completed";
+        _dbContext.SubTask.Update(subtask);
         _dbContext.SaveChanges();
 
         var task = _dbContext.Task.FirstOrDefault(t => t.Id == subtask.TaskId);

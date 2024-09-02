@@ -11,5 +11,6 @@ public class ProjectDetail {
     public List<Invitation>? Invitations {get;set;}
     public List<TaskWeight>? TaskWeight {get;set;}
     public List<ProjectFile>? ProjectFiles {get;set;}
+    public List<Skillv>? UserSkills {get;set;}
 
 }

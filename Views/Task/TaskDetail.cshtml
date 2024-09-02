@@ -4,7 +4,7 @@
     <div class="container-fluid">
     <div class="row mb-2">
         <div class="col-sm-6">
-        <h1>Task Detail Info</h1>
+        <h1>Task Detail</h1>
     </div>
     </div><!-- /.container-fluid -->
 </section>
@@ -38,7 +38,7 @@
                 <div class="info-box bg-light">
                 <div class="info-box-content">
                     <span class="info-box-text text-center text-muted bg-color-primary">Progress</span>
-                    <span class="info-box-number text-center text-muted mb-0">@Model.Task.Progress</span>
+                    <span class="info-box-number text-center text-muted mb-0">@Model.Task.Progress%</span>
                 </div>
                 </div>
             </div>
@@ -69,7 +69,13 @@
                     <div class="product-info">
                       <span>Title</span>
                       <a href="javascript:void(0)" class="product-title"> @st.Title
-                         <span class="badge badge-success float-right">Assigned</span></a>
+                        @if(st.Status == "Pending"){
+                            <span class="badge badge-primary float-right">@st.Status</span>
+                        }
+                        else{
+                            <span class="badge badge-success float-right">@st.Status</span>
+                        }
+                         </a>
                          <span class="float-right"></span>
                       <span class="product-description">
                         @st.Description
@@ -79,8 +85,8 @@
                     @if(Model.SubTaskWeights != null || Model.SubTaskWeights.Count() != 0){
                         foreach(var stw in Model.SubTaskWeights){
                         if(stw.SubTaskId == st.Id){
-                            <p>The SubTask Impact on Task in % </p>
-                            <span class="text-primary">@stw.Weight%</span>
+                            
+                            <span class="badge badge-secondary">Weight : @stw.Weight%</span>
                         }
 
                         }

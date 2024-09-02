@@ -3,6 +3,7 @@
 @inject UserManager<ApplicationUser> _userManager
 @using ProjectManagementApp.Models
 @model ProjectDetail
+
 <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
@@ -12,6 +13,7 @@
         </div>
       </div>
 </section>
+
 
 <section class="content">
       <div class="card">
@@ -224,7 +226,17 @@
                     <button type="submit" class="badge-primary rounded float-right px-3">Send</button>
                     <select name="selectedUser" id="" class="bg-secondary float-right mr-2" width = 100>
                       @foreach(var user in Model.AvailableUsers){
-                          <option value="@user.Id">@user.FirstName</option>
+                          <option value="@user.Id">Name : @user.FirstName , Skills :-
+                            <ul>
+                              @foreach(var skill in Model.UserSkills ){
+                                if(skill.userId == user.Id){
+                                   foreach(var skillss in skill.Skills){
+                                   <span class="badge badge-warning float-right">@skillss,</span>
+                                   }
+                                }
+                              }
+                            </ul>
+                          </option>
                       }
                     </select>
                   </form>
