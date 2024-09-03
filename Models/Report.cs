@@ -1,8 +1,4 @@
 
-// one to many
-// onet to one
-
-// based on the role if the curr user is pm = 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

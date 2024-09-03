@@ -42,7 +42,6 @@ public class ProjectController : Controller {
                  Update_Date = DateTime.Now,
                  Created_By = curruser.Id, 
              };
-
             _dbContext.Project.Add(project);
             _dbContext.SaveChanges();
 
@@ -72,7 +71,8 @@ public class ProjectController : Controller {
         return View(model);
         }
       
-    [HttpGet]
+    
+     [HttpGet]
      public async Task<IActionResult> ProjectEdit(int id){
         var project = _dbContext.Project.FirstOrDefault(p=>p.Id == id);
         ProjectModel model = new ProjectModel(){
@@ -81,10 +81,10 @@ public class ProjectController : Controller {
             Description = project.Description,
             Start_Date = project.Start_Date.ToString("MM/dd/yyyy HH:mm"),
             End_Date = project.End_Date.ToString("MM/dd/yyyy HH:mm"),
-
         };
          return View(model);
      }
+
      [HttpPost]
       public async Task<IActionResult> ProjectEdit(ProjectModel model){
         var currpro = _dbContext.Project.FirstOrDefault(p => p.Id == model.ProjectId);
@@ -131,7 +131,7 @@ public class ProjectController : Controller {
 
      [HttpGet]
      public async Task<IActionResult> ProjectDetail(int? Id){
-
+        
         var curruser = await _userManager.GetUserAsync(User); 
         var tasks =  _dbContext.Task.Where(t => t.ProjectId == Id).ToList();
         var _project = _dbContext.Project.FirstOrDefault(p=>p.Id == Id);

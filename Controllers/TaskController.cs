@@ -41,9 +41,7 @@ public class TaskController : Controller {
                 Point = model.Point,
             };
             _dbContext.TaskWeight.Add(taskWeight);
-            _dbContext.SaveChanges(); 
-
-        
+            // _dbContext.SaveChanges(); 
             TaskStatus taskStatus = new TaskStatus(){
                 TaskId = task.Id,
             };
@@ -183,12 +181,14 @@ public class TaskController : Controller {
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AcceptInvitation(string TaskId,string ProjectId,string InvitationId,string Status ){
+
         var curruser = await _userManager.GetUserAsync(User);
         int invId = Convert.ToInt16(InvitationId);
         var inv = _dbContext.Invitation.FirstOrDefault(i => i.Id == invId);
         inv.status = Status;
         _dbContext.Invitation.Update(inv);
-        _dbContext.SaveChanges();   
+        // _dbContext.SaveChanges();   
+
         if(inv.status == "Accepted"){
         ProjectMember pm = new ProjectMember(){
             ProjId = Convert.ToInt16(ProjectId),
@@ -196,7 +196,8 @@ public class TaskController : Controller {
             Joined_At = DateTime.Now,
         };
         _dbContext.ProjectMember.Add(pm);
-        _dbContext.SaveChanges();
+        // _dbContext.SaveChanges();
+
         int taskId = Convert.ToInt16(TaskId);
         var task = _dbContext.Task.FirstOrDefault(t => t.Id == taskId);
         task.Assigned_to = curruser.Id;
@@ -207,6 +208,7 @@ public class TaskController : Controller {
         }
     return RedirectToAction("AllProjects","Project");   
     }
+
     public bool IsInvitationUnique(string selectedUser,string TaskId,string ProjectId){
         return  _dbContext.Invitation.Any(i => i.Recepant_Id == selectedUser && i.TaskId == Convert.ToInt16(TaskId) && i.ProjectId == Convert.ToInt16(ProjectId));
     }

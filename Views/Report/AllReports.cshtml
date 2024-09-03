@@ -4,6 +4,7 @@
 <div>
     <div class="card-header mx-5 my-4">
       <h3 class="card-title"> All Reports </h3>
+      <a class="bg-danger float-right px-3 py-1 rounded" asp-controller = "Project" asp-action ="AllProjects" >Back</a>
     </div>
     <!-- /.card-header -->
     <div class="card-body p-0 mx-5">
@@ -15,6 +16,7 @@
           </tr>
         </thead>
         <tbody>
+
         @foreach(var report in Model.Reports){
           <tr>
             <td>@report.Title</td>

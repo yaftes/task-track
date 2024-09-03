@@ -63,9 +63,13 @@ public class ReportController : Controller {
     public async Task<IActionResult> ReportDetail(int Id){
         var report = _dbContext.Report.FirstOrDefault(r => r.Id == Id);
         var reportfiles = _dbContext.ReportFile.Where(r => r.ReportId == report.Id).ToList();
+        var task = _dbContext.Task.FirstOrDefault(t => t.Id == report.TaskId);
+        var taskfile = _dbContext.TaskFile.Where(tf => tf.TaskId == task.Id).ToList();
         ReportDetail reportDetail = new ReportDetail(){
             Report = report,
-            ReportFiles = reportfiles
+            ReportFiles = reportfiles,
+            Task = task,
+            TaskFiles = taskfile
         };
         return View(reportDetail);
 

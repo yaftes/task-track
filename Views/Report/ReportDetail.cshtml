@@ -10,26 +10,62 @@
         <div class="card-body">
           <div class="row">
             <div class="col-6">
-             <span class="text-primary">Title</sp>
-             <br>
+             <span class="bg-warning px-2 py-1 rounded">Title</span>
               <span class="text-muted">@Model.Report.Title</span>
-              <br>
-              <span class="text-primary">Descripiton</span>
+              <h4 class="mt-4">Detail</h4>
               <p>@Model.Report.Detail</p>
+
               <div class="text-muted">
-                <p class="text-sm">Client Company
-                  <b class="d-block">Deveint Inc</b>
-                </p>
-                <p class="text-sm">Project Leader
-                  <b class="d-block">Tony Chicken</b>
-                </p>
+                <span class="bg-warning px-2 py-1 rounded text-light">Reported By @Model.Task.Name</span>
+                <br><br>
+                <span class="mt-3 bg-secondary">Task Title:@Model.Task.Title</span><br><br>
+                <span>Task Description</span>
+                <p>@Model.Task.Description</p>
+                <div>
+                  <span  class="bg-secondary px-3 py-2  mb-2">Task Files</span>
+                  <ul class="list-unstyled mt-4">
+                @foreach(var tf in Model.TaskFiles){
+                  <li>
+                    @if(tf.ContentType.StartsWith("image/")){
+                         <i class="fas fa-file-image" style="color:blue;"></i>
+                         <a href="@Url.Action("GetTaskFile", "Task", new { id = tf.Id })">
+                            Download @tf.FileName
+                        </a>
+                    }
+                    else if(tf.ContentType == "application/pdf"){
+                      <i class="fas fa-file-pdf" style="color:red;"></i>
+                      <a href="@Url.Action("GetTaskFile", "Task", new { id = tf.Id })">
+                            Download @tf.FileName
+                        </a>
+                    }
+                    else if(tf.ContentType == "application/msword"){
+                      <i class="fas fa-file-word"></i>
+                      <a href="@Url.Action("GetTaskFile", "Task", new { id = tf.Id })">
+                            Download @tf.FileName
+                        </a>
+                    }
+                    else{
+                      <i class="fas fa-file" style="color:gray;"></i>
+                      <a href="@Url.Action("GetTaskFile", "Task", new { id = tf.Id })">
+                            Download @tf.FileName
+                        </a>
+                    }
+                 
+                  </li>
+                }
+              </ul>
+              <a asp-controller = "Report" asp-action = "AllReports" asp-route-Id = "@Model.Report.ProjectId" class="btn btn-sm btn-primary">Back</a>
+
+                </div>
               </div>
+
+              
             </div>
             
             <div class="col-6">
               
               <ul class="list-unstyled">
-                <h5 class="mt-5 text-muted">Project files</h5>
+                <h5 class="mt-5 text-muted">Report files</h5>
                 @foreach(var rd in Model.ReportFiles){
                 <li>
                    <i class="fas fa-file" style="color:gray;"></i>
@@ -41,8 +77,7 @@
                
               </ul>
               <div>
-                <a href="#" class="btn btn-sm btn-primary">Add files</a>
-                <a href="#" class="btn btn-sm btn-warning">Report contact</a>
+                
               </div>
             </div>
 

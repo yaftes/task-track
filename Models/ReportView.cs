@@ -7,5 +7,4 @@ public class ReportView {
     [Required]
     public string? Detail {get;set;}
 
-
 }
