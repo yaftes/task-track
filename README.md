@@ -1,55 +1,43 @@
-TaskOrbit
-TaskOrbit is a web-based project management platform designed to help teams efficiently plan, track, and execute their projects. Built with ASP.NET MVC, TaskOrbit offers a clean and intuitive interface for managing tasks, milestones, and team collaboration.
+# TaskOrbit 🚀
 
-Features
-Role-based Access Control
+**TaskOrbit** is a **web-based project management platform** designed to help teams efficiently **plan, track, and execute projects**. Built with **ASP.NET MVC**, TaskOrbit offers a **clean and intuitive interface** for managing tasks, milestones, and team collaboration.
 
-Admin, Project Manager, Team Member roles
+---
 
-Secure user management and permissions
+## ✨ Features
 
-Project Management
+### Role-based Access Control 🔑
+- Admin, Project Manager, and Team Member roles
+- Secure user management and permissions
 
-Create, edit, and delete projects
+### Project Management 📁
+- Create, edit, and delete projects
+- Assign team members to projects
+- Track project progress with milestones
 
-Assign team members to projects
+### Task Management 📝
+- Create, assign, and update tasks
+- Set deadlines and priorities
+- Mark tasks as complete and monitor status
 
-Track project progress with milestones
+### Milestone & Timeline Tracking ⏱️
+- Visualize project milestones
+- Track progress with timelines and completion percentage
 
-Task Management
+### Team Collaboration 💬
+- Comment on tasks and projects
+- Real-time updates on task status (optional with SignalR integration)
 
-Create, assign, and update tasks
+### Reporting & Analytics 📊
+- Generate progress reports
+- View team performance and project summaries
 
-Set deadlines and priorities
+---
 
-Mark tasks as complete and monitor status
+## 💻 Technology Stack
 
-Milestone & Timeline Tracking
-
-Visualize project milestones
-
-Track progress with timelines and completion percentage
-
-Team Collaboration
-
-Comment on tasks and projects
-
-Real-time updates on task status (optional with SignalR integration)
-
-Reporting & Analytics
-
-Generate progress reports
-
-View team performance and project summaries
-
-Technology Stack
-Frontend: ASP.NET MVC, HTML5, CSS3, Bootstrap, JavaScript/jQuery
-
-Backend: ASP.NET MVC, C#
-
-Database: SQL Server
-
-
-Authentication: ASP.NET Identity
-
-Version Control: Git
+- **Frontend:** ASP.NET MVC, HTML5, CSS3, Bootstrap, JavaScript/jQuery
+- **Backend:** ASP.NET MVC, C#
+- **Database:** SQL Server
+- **Authentication:** ASP.NET Identity
+- **Version Control:** Git
